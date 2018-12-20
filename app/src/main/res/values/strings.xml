@@ -1,4 +1,19 @@
 <resources>
-    <string name="app_name">MyFirstApplication</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name">TaxiDriver</string>
+    <string name="title_activity_main">TaxiDriver</string>
+
+    <string name="Name">Name</string>
+    <string name="Email">Email</string>
+    <string name="Phone">Phone</string>
+    <string name="Statusofdrive">Status of drive</string>
+    <string name="Startaddress">Start address</string>
+    <string name="Endaddress">End address</string>
+    <string name="Password">Password</string>
+    <string name="Order">Order</string>
+    <string name="NoaccountyetCreateone">No account yet? Create one</string>
+    <string name="Login">Get Start</string>
+    <string name="Login1">Login</string>
+    <string name="Register">Register</string>
+    <string name="SignUp">Sign up</string>
+    <string name="Welcome">welcome to get taxi application!</string>
 </resources>
