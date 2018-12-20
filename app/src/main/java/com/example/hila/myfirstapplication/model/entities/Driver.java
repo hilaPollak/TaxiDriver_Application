@@ -1,15 +1,19 @@
 package com.example.hila.myfirstapplication.model.entities;
 
+import android.content.ContentValues;
+
 /**
  this class represent the driver's characteristics
  */
 public class Driver {
     private String FirstName;//first name of driver
     private String LastName;//last name of driver
-    private long Id;//id of driver
+    private long _Id;//id of driver
     private long PhoneNumber;// phone number of driver
     private String Email;// email of driver
     private long CreditCard;// credit card for commission
+    private String password;//password for driver
+
 
     /**
      this func build defult constructor
@@ -19,13 +23,14 @@ public class Driver {
     /**
      this func build constructor
      */
-    public Driver(String firstName, String lastName, long id, long phoneNumber, String email, long creditCard) {
+    public Driver(String firstName, String lastName, long id, long phoneNumber, String email, long creditCard,String password1) {
         FirstName = firstName;
         LastName = lastName;
-        Id = id;
+        _Id = id;
         PhoneNumber = phoneNumber;
         Email = email;
         CreditCard = creditCard;
+        password=password1;
     }
 
     /**
@@ -63,16 +68,16 @@ public class Driver {
      this func return the id of driver
      * @return   the driver's id
      */
-    public long getId() {
-        return Id;
+    public long get_Id() {
+        return _Id;
     }
     /**
      this func input the driver's id
      @param  id  the id driver
      @return   null
      */
-    public void setId(long id) {
-        Id = id;
+    public void set_Id(long id) {
+        _Id = id;
     }
     /**
      this func return the phone number of driver
@@ -119,4 +124,15 @@ public class Driver {
     public void setCreditCard(long creditCard) {
         CreditCard = creditCard;
     }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }
