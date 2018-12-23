@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
             dataBase.isValidDriverAuthentication(emailText.getText().toString(), passwordText.getText().toString(), action);
         }catch (Exception e) {
             Toast.makeText(getBaseContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
-            registerButton.setEnabled(true);
+            registerButton.setEnabled(false);
         }
     }
 }
