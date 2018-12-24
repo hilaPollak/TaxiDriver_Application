@@ -20,11 +20,11 @@
             android:id="@+id/textView"
             android:layout_width="140dp"
             android:layout_height="43dp"
-            android:background="@color/white"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/registration"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:background="@color/LightBlue2"/>
 
         <Space
             android:layout_width="match_parent"

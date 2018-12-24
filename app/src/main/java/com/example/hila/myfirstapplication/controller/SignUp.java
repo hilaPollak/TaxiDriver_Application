@@ -1,5 +1,6 @@
 package com.example.hila.myfirstapplication.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -75,6 +76,12 @@ public class SignUp extends Activity {
 
         return  driver;
     }
+
+   void goToActivity2(){
+       Intent intent = new Intent(this, MainActivity.class);//when the user click the button login the intent call to new activity
+       startActivity(intent);//start the activity
+    }
+
     protected  void addDriver(Driver driver) {
         try {
             buttonSignUp.setEnabled(false);
@@ -84,6 +91,7 @@ public class SignUp extends Activity {
                 public void onSuccess() {
                     Toast.makeText(getBaseContext(), "ההרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
                     buttonSignUp.setEnabled(true);
+                    goToActivity2();
                 }
 
                 @Override
