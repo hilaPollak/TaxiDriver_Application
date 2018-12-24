@@ -19,30 +19,38 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="231dp"
             android:layout_height="43dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/Login1"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <EditText
             android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_action_name"
             android:ems="10"
-            android:inputType="textEmailAddress"
             android:hint="@string/Email"
-            android:textColorHint="@color/black"
-            android:drawableLeft="@drawable/ic_action_name"/>
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="23dp" />
 
         <EditText
             android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
+            android:layout_width="235dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_action_password"
             android:ems="10"
-            android:inputType="textPassword"
             android:hint="@string/Password"
-            android:textColorHint="@color/black"
-            android:drawableLeft="@drawable/ic_action_password"/>
+            android:inputType="textPassword"
+            android:textColorHint="@color/black" />
 
         <Button
             android:id="@+id/buttonRegister"
@@ -51,19 +59,22 @@
             android:background="@color/LightBlue"
             android:onClick="LoginButton"
             android:text="@string/Register"
-            tools:text="@string/Register" />
+            tools:text="@string/Register"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/textViewSign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/NoaccountyetCreateone"
-            android:textSize="15dp"
             android:autoLink="all"
             android:clickable="true"
             android:onClick="GosignUpActivity"
+            android:text="@string/NoaccountyetCreateone"
+            android:layout_gravity="center"
+            android:gravity="center"
 
-            />
+            android:textSize="15dp" />
 
 
     </LinearLayout>
