@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#8a252228</color>
     <color name="YellowTaxi">#dba401</color>
+    <color name="LightBlue">#15AC9E</color>
+    <color name="LightBlue2">#d015ac9e</color>
+    <color name="white">#ffffff</color>
 </resources>

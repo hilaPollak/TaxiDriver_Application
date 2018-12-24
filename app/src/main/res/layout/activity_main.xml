@@ -31,7 +31,8 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint="@string/Email"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_name"/>
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -40,22 +41,24 @@
             android:ems="10"
             android:inputType="textPassword"
             android:hint="@string/Password"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_password"/>
 
         <Button
             android:id="@+id/buttonRegister"
-            android:layout_width="wrap_content"
+            android:layout_width="82dp"
             android:layout_height="wrap_content"
-            android:text="@string/Register"
-            tools:text="@string/Register"
+            android:background="@color/LightBlue"
             android:onClick="LoginButton"
-            />
+            android:text="@string/Register"
+            tools:text="@string/Register" />
 
         <TextView
             android:id="@+id/textViewSign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/NoaccountyetCreateone"
+            android:textSize="15dp"
             android:autoLink="all"
             android:clickable="true"
             android:onClick="GosignUpActivity"

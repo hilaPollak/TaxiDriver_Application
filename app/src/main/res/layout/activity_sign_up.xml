@@ -12,15 +12,23 @@
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingTop="56dp"
+        android:background="@color/LightBlue2">
 
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="140dp"
             android:layout_height="43dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/registration"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextName"
@@ -29,16 +37,28 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="@string/Name"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_drivername"
+            android:background="@color/white"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="@string/lastName"
-            android:textColorHint="@color/black"/>
+            android:inputType="textPersonName"
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_drivername"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextID"
@@ -47,8 +67,14 @@
             android:ems="10"
             android:inputType="number"
             android:hint="@string/id"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_id"
+            android:background="@color/white"/>
 
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextPhone"
@@ -57,7 +83,13 @@
             android:ems="10"
             android:inputType="number"
             android:hint="@string/Phone"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_phone"
+            android:background="@color/white"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -66,8 +98,14 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint="@string/Email"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_name"
+            android:background="@color/white"/>
 
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextCreditCard"
@@ -76,23 +114,37 @@
             android:ems="10"
             android:inputType="number"
             android:hint="@string/CreditCard"
-            android:textColorHint="@color/black"/>
+            android:textColorHint="@color/black"
+            android:drawableLeft="@drawable/ic_action_credit"
+            android:background="@color/white"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/ic_action_password"
             android:ems="10"
-            android:inputType="textPassword"
             android:hint="@string/Password"
-            android:textColorHint="@color/black"/>
+            android:inputType="textPassword"
+            android:textColorHint="@color/black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
         <Button
             android:id="@+id/buttonSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:onClick="signUpClick"
             android:text="@string/SignUp"
-            android:onClick="signUpClick"/>
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
