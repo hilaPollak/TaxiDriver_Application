@@ -13,6 +13,8 @@ public class Drive {
     private String Name;//client's name
     private long PhoneNumber;//client's phone number
     private String Email;//client's email
+    private String DriverName;//driver name
+
 
     /**
      this func build defult constructor
@@ -31,6 +33,7 @@ public class Drive {
         Name = name;
         PhoneNumber = phoneNumber;
         Email = email;
+        DriverName="";
     }
 
     /**
@@ -157,5 +160,13 @@ public class Drive {
      */
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public String getDriverName() {
+        return DriverName;
+    }
+
+    public void setDriverName(String d) {
+        DriverName = d;
     }
 }

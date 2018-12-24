@@ -60,10 +60,10 @@ public class Firebase_DBManager implements IDataBase {
                     if(checkDriver.getPassword().equals(passwordForCheck))
                         action.onSuccess();
                     else
-                        action.onFailure(new Exception("password is uncorrect"));
+                        action.onFailure(new Exception("Password is uncorrect"));
                 }
                 else
-                    action.onFailure(new Exception("user doesnt exist"));
+                    action.onFailure(new Exception("User doesn't exist"));
             }
 
             @Override
