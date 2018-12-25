@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".controller.SignUp"
-            android:label="@string/title_activity_sign_up"></activity>
+            android:label="@string/title_activity_sign_up" />
     </application>
 
 </manifest>

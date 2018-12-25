@@ -3,6 +3,7 @@ package com.example.hila.myfirstapplication.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.hila.myfirstapplication.R;
 import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
+import com.example.hila.myfirstapplication.model.entities.Drive;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
 public class SignUp extends Activity {
@@ -56,8 +58,7 @@ public class SignUp extends Activity {
 
     void signUpClick(View view){
 
-        Driver driver = getDriver();
-        addDriver(driver);
+        checkData();
 
     }
 
@@ -114,4 +115,79 @@ public class SignUp extends Activity {
 
     }
 
+
+    /***
+     * thisfunc check the correct of email input
+     * @param editText email text
+     * @returnbtrue if currect input, false if null or uncorrect mail address
+     */
+    public boolean isEmail(EditText editText) {
+        CharSequence email= editText.getText().toString();
+        if (email == null)
+            return false;
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
+    }
+
+    /***
+     * thisfunc check the correct of name input
+     * @param editText name text
+     * @returnbtrue if currect input, false if null
+     */
+    public boolean isName(EditText editText) {
+        CharSequence name= editText.getText().toString();
+        return (!TextUtils.isEmpty(name));
+
+    }
+
+    /***
+     * thisfunc check the correct of phone input
+     * @param editText phone text
+     * @returnbtrue if currect input, false if null or uncorrect phone's digits
+     */
+    public boolean isPhone(EditText editText) {
+        CharSequence phone= editText.getText().toString();
+        if (phone == null)
+            return false;
+        return (phone.length() ==10);
+
+    }
+
+
+    public boolean isCredit(EditText editText) {
+        CharSequence credit= editText.getText().toString();
+        if (credit == null)
+            return false;
+        return (credit.length() ==16);
+
+    }
+
+    /***
+     * this func check the input of drive before she add to data base
+     */
+    void checkData(){
+
+        if(!isName(editTextName))//check nae input
+            editTextName.setError("name is reqired");
+        else  if(!isName(editTextLastName))//check nae input
+            editTextLastName.setError("last name is reqired");
+        else if(!isPhone(editTextID))//check phone input
+            editTextID.setError("Enter correct ID with 10 digits");
+        else if(!isPhone(editTextPhone))//check phone input
+            editTextPhone.setError("Enter correct phone number with 10 digits");
+        else if(!isEmail(editTextEmail))//check email input
+            editTextEmail.setError("Enter valid email");
+        else if(!isCredit(editTextCreditCard))//check phone input
+            editTextCreditCard.setError("Enter correct credit card with 16 digits");
+        else if(!isName(editTextPassword))//check phone input
+            editTextPassword.setError("password is reqired");
+
+        else//input correct
+        {
+            Driver driver = getDriver();
+            addDriver(driver);
+        }
+
+    }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+   >
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_see_all_drives"
+            android:icon="@drawable/ic_taxi"
+            android:title="@string/available_drives"/>
+        <item android:id="@+id/nav_see_my_drives"
+            android:icon="@drawable/ic_person"
+            android:title="@string/my_drives"/>
+        <item android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/exit"/>
+    </group>
+
+</menu>
