@@ -77,6 +77,8 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+
+
     protected void LoginButton(View view)
     {
         try {
