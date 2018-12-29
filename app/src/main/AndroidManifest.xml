@@ -21,6 +21,10 @@
         <activity
             android:name=".controller.SignUp"
             android:label="@string/title_activity_sign_up" />
+        <activity
+            android:name=".controller.Profile"
+            android:label="@string/title_activity_xxx"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

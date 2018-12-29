@@ -25,8 +25,6 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
 
@@ -36,6 +34,12 @@
     <string name="exit"> Exit</string>
     <string name="title_activity_dprofile">Dprofile</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_activity_xxx">XXX</string>
 
 
 </resources>

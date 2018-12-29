@@ -76,7 +76,11 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
     }
-
+    protected void GoProfileActivity( )
+    {
+        Intent intent = new Intent(getApplicationContext(), Profile.class);
+        startActivity(intent);
+    }
 
 
     protected void LoginButton(View view)
@@ -90,7 +94,8 @@ public class MainActivity extends Activity {
                 public void onSuccess() {
                     registerButton.setEnabled(true);
                     DataInSharedPreferences();
-                    Toast.makeText(getBaseContext(), "ההתחברות בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), "ההתחברות בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+                    GoProfileActivity();
                 }
 
                 @Override
@@ -109,6 +114,7 @@ public class MainActivity extends Activity {
         }catch (Exception e) {
             Toast.makeText(getBaseContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
             registerButton.setEnabled(true);
+
         }
     }
 }
