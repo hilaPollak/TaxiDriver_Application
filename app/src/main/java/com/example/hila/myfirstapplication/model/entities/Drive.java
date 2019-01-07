@@ -1,6 +1,10 @@
 package com.example.hila.myfirstapplication.model.entities;
 
+import android.content.ContentValues;
+
 import java.time.Clock;
+import java.util.Date;
+
 /**
  this class represent the drive's characteristics
  */
@@ -8,32 +12,45 @@ public class Drive {
     private DriveStatus StatusOfRide;//available/ treatment/ ending
     private String StartAddress;//the address to pick up client
     private String EndAddress;//Destination address
-    private Clock StartTime;//start of driving
-    private Clock EndTime;//end of driving
+    // private Date StartTime;//start of driving
+    // private Date EndTime;//end of driving
     private String Name;//client's name
     private long PhoneNumber;//client's phone number
     private String Email;//client's email
     private String DriverName;//driver name
 
 
+
     /**
      this func build defult constructor
+     * @param driveStatus
+     * @param startAddress1
+     * @param endAddress1
+     * @param c
+     * @param endTime
+     * @param nameText
+     * @param phoneText
+     * @param emailText
      */
-    public Drive(){}
+    public Drive(DriveStatus driveStatus, String startAddress1, String endAddress1, Date c, Date endTime, String nameText, String phoneText, String emailText){}
 
     /**
      this func build constructor
      */
-    public Drive(DriveStatus statusOfRide, String startAddress, String endAddress, Clock startTime, Clock endTime, String name, long phoneNumber, String email) {
+    public Drive(DriveStatus statusOfRide, String startAddress, String endAddress, Date startTime, Date endTime, String name, long phoneNumber, String email) {
         StatusOfRide = statusOfRide;
         StartAddress = startAddress;
         EndAddress = endAddress;
-        StartTime = startTime;
-        EndTime = endTime;
+        //StartTime = startTime;
+        //EndTime = endTime;
         Name = name;
         PhoneNumber = phoneNumber;
         Email = email;
         DriverName="";
+
+    }
+
+    public Drive() {
     }
 
     /**
@@ -88,33 +105,33 @@ public class Drive {
      this func return start time of driving
      * @return   the start time of driving
      */
-    public Clock getStartTime() {
-        return StartTime;
-    }
+    //  public Date getStartTime() {
+    //   return StartTime;
+    // }
     /**
      this func input the ride's start time
      @param  startTime  the start time of the ride
      @return   null
      */
-    public void setStartTime(Clock startTime) {
-        StartTime = startTime;
-    }
+    // public void setStartTime(Date startTime) {
+    //   StartTime = startTime;
+    // }
 
     /**
      this func return end time of driving
      * @return   the end time of driving
      */
-    public Clock getEndTime() {
-        return EndTime;
-    }
+    //  public Date getEndTime() {
+    //    return EndTime;
+    // }
     /**
      this func input the ride's end time
      @param  endTime  the end time of the ride
      @return   null
      */
-    public void setEndTime(Clock endTime) {
-        EndTime = endTime;
-    }
+    // public void setEndTime(Date endTime) {
+    //  EndTime = endTime;
+    //  }
     /**
      this func return the name of client
      * @return   the client's name
@@ -162,6 +179,7 @@ public class Drive {
         Email = email;
     }
 
+
     public String getDriverName() {
         return DriverName;
     }
@@ -169,4 +187,9 @@ public class Drive {
     public void setDriverName(String d) {
         DriverName = d;
     }
+
+
+
+
+
 }

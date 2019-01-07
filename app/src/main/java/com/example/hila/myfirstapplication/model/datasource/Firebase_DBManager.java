@@ -31,6 +31,11 @@ public class Firebase_DBManager implements IDataBase {
     //region Fields
     static DatabaseReference drivesRef;//.ref of drives
     static DatabaseReference driverRef;//ref of drivers
+
+    public static List<Drive> getDriveList() {
+        return driveList;
+    }
+
     static List<Drive> driveList;
     static List<Driver> driverList;
 
@@ -91,6 +96,8 @@ public class Firebase_DBManager implements IDataBase {
      * @param <T>
      */
     public interface NotifyDataChange<T>{
+     //   void OnDataChanged(List<Drive> obj);
+
         void onDataChange(T obj);
         void onFailure(Exception exp);
     }
@@ -321,19 +328,19 @@ public class Firebase_DBManager implements IDataBase {
     }
 
    // @Override
-    public List<Drive> getDrivesOfDate(Date date) {
+  /*  public List<Drive> getDrivesOfDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         String dateStr = simpleDateFormat.format(date);
         String dateSourceStr, dateDesStr;
         List<Drive> drivesOfDate = new ArrayList<>();
         for (Drive drive : driveList) {
-            dateSourceStr = simpleDateFormat.format(drive.getStartTime());
-            dateDesStr = simpleDateFormat.format(drive.getEndTime());
+            //dateSourceStr = simpleDateFormat.format(drive.getStartTime());
+           // dateDesStr = simpleDateFormat.format(drive.getEndTime());
             if (dateStr.matches(dateSourceStr) || dateStr.matches(dateDesStr))
                 drivesOfDate.add(drive);
         }
         return drivesOfDate;
-    }
+    }*/
 
    // @Override
     public List<Drive> getDrivesOfPrice(double price) {

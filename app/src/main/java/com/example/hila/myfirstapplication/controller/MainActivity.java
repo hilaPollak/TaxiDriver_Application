@@ -14,9 +14,16 @@ import android.widget.Toast;
 import com.example.hila.myfirstapplication.R;
 import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
+import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
+import com.example.hila.myfirstapplication.model.entities.Drive;
+import com.example.hila.myfirstapplication.model.entities.Driver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
+    List<Driver> l = new ArrayList<>();
 
     TextView textView;
     EditText emailText;
@@ -34,12 +41,14 @@ public class MainActivity extends Activity {
      * (http://www.buzzingandroid.com/tools/android-layout-finder)
      */
     private void findViews() {
-        textView = (TextView)findViewById( R.id.textView );
-        emailText = (EditText)findViewById( R.id.editTextEmail );
-        passwordText = (EditText)findViewById( R.id.editTextPassword );
-        registerButton = (Button)findViewById( R.id.buttonRegister );
-        textView2 = (TextView)findViewById( R.id.textViewSign );
+        textView = (TextView) findViewById(R.id.textView);
+        emailText = (EditText) findViewById(R.id.editTextEmail);
+        passwordText = (EditText) findViewById(R.id.editTextPassword);
+        registerButton = (Button) findViewById(R.id.buttonRegister);
+        textView2 = (TextView) findViewById(R.id.textViewSign);
         dataBase = FactoryDataBase.getDataBase();
+
+
     }
 
     @Override
@@ -47,13 +56,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
+
         sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         DataFromSharedPreferences();
+      //  t();
 
     }
 
 
-    protected void DataFromSharedPreferences(){
+    protected void DataFromSharedPreferences() {
         if (sharedpreferences.contains("email"))
             emailText.setText(sharedpreferences.getString("email", ""));
         if (sharedpreferences.contains("password"))
@@ -61,7 +72,7 @@ public class MainActivity extends Activity {
     }
 
 
-    protected void DataInSharedPreferences(){
+    protected void DataInSharedPreferences() {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("email", emailText.getText().toString());
         editor.putString("password", passwordText.getText().toString());
@@ -70,21 +81,40 @@ public class MainActivity extends Activity {
 
     }
 
+    protected void t() {
+        Firebase_DBManager.notifyToDriverList(new Firebase_DBManager.NotifyDataChange<List<Driver>>() {
 
-    protected void GosignUpActivity(View view)
-    {
+
+            @Override
+            public void onDataChange(List<Driver> obj) {
+               // l = obj;
+            }
+
+            @Override
+            public void onFailure(Exception exp) {
+                Toast.makeText(getBaseContext(), exp.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        Driver d = l.get(0);
+
+    }
+
+    protected void GosignUpActivity(View view) {
+
+
         Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
     }
-    protected void GoProfileActivity( )
-    {
+
+    protected void GoProfileActivity() {
         Intent intent = new Intent(getApplicationContext(), Profile.class);
         startActivity(intent);
     }
 
 
-    protected void LoginButton(View view)
-    {
+    protected void LoginButton(View view) {
         try {
 
 
@@ -111,7 +141,7 @@ public class MainActivity extends Activity {
                 }
             };
             dataBase.isValidDriverAuthentication(emailText.getText().toString(), passwordText.getText().toString(), action);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
             registerButton.setEnabled(true);
 
