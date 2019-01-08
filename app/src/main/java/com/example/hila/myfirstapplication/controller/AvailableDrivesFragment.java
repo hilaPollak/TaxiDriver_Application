@@ -25,9 +25,7 @@ import java.util.List;
 public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public List<Drive> drives;
-
     @Nullable
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,9 +35,7 @@ public class AvailableDrivesFragment extends Fragment {
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
         Firebase_DBManager.notifyToDriveList(new Firebase_DBManager.NotifyDataChange<List<Drive>>() {
-
 
             @Override
             public void onDataChange(List<Drive> obj) {
@@ -56,13 +52,8 @@ public class AvailableDrivesFragment extends Fragment {
                 Toast.makeText(getActivity(), "error to get drives list\n" + exception.toString(), Toast.LENGTH_LONG).show();
             }
         });
-
-
         return v;
-
-
     }
-
 
     @Override
     public void onDestroy() {
@@ -70,12 +61,9 @@ public class AvailableDrivesFragment extends Fragment {
         super.onDestroy();
     }
 
-
     public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder>
 
     {
-
-
         @Override
         public DriveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.item_drive, parent, false);
@@ -84,7 +72,6 @@ public class AvailableDrivesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DriveViewHolder holder, int position) {
-
             Drive drive = drives.get(position);
             holder.nameTextView.setText(drive.getName());
             holder.phoneTextView.setText(Long.toString(drive.getPhoneNumber()));
@@ -103,23 +90,16 @@ public class AvailableDrivesFragment extends Fragment {
                 super(itemView);
                 phoneTextView = itemView.findViewById(R.id.phone_item_drive);
                 nameTextView = itemView.findViewById(R.id.name_item_drive);
-
                 // itemView.setOnClickListener();
                 itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
 
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                         menu.setHeaderTitle("Select Action");
-
-                        MenuItem delete = menu.add(Menu.NONE, 1, 1, "Delete");
-
-                        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        MenuItem details = menu.add(Menu.NONE, 1, 1, "view details");
+                        details.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                int position = getAdapterPosition();
-                                long id = drives.get(position).getPhoneNumber();
-
-
                                 return true;
                             }
                         });
@@ -127,7 +107,5 @@ public class AvailableDrivesFragment extends Fragment {
                 });
             }
         }
-
-
     }
 }
