@@ -1,5 +1,9 @@
 package com.example.hila.myfirstapplication.controller;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -80,7 +84,33 @@ public class Profile extends AppCompatActivity
 
 
         } else if (id == R.id.nav_exit) {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("EXIT?")
+                    .setMessage("Are you sure you want to EXIT this app?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                            homeIntent.addCategory(Intent.CATEGORY_HOME);
+                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+                            //go to phones home screen
+                            startActivity(homeIntent);
+                            finish();
+                            System.exit(0);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
