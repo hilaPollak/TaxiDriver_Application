@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 
         sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         DataFromSharedPreferences();
-      //  t();
+
 
     }
 
