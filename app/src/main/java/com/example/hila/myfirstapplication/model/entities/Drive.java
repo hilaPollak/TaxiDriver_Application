@@ -188,8 +188,10 @@ public class Drive {
         DriverName = d;
     }
 
+    @Override
+    public String toString() {
+        return "Name: "+Name+ "\n"+"Phone Number: "+PhoneNumber+"\n" + "Start Address: " +StartAddress+ "\n"
+                +"End Address: " + EndAddress+"\n"+"Email: "+Email+ "\n";
 
-
-
-
+    }
 }

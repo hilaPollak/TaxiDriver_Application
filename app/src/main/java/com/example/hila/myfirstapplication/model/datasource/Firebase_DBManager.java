@@ -278,7 +278,7 @@ public class Firebase_DBManager implements IDataBase {
     }
 
     //@Override
-    public List<Drive> getAvailableDrives() {
+    public static List<Drive> getAvailableDrives() {
         List<Drive> availableDrives = new ArrayList<>();
         for (Drive drive : driveList)
             if (drive.getStatusOfRide().toString().equals(DriveStatus.AVAILABLE.toString()))
@@ -349,6 +349,30 @@ public class Firebase_DBManager implements IDataBase {
             if (new Location(drive.getEndAddress()).distanceTo(new Location(drive.getStartAddress()))/0/1000.0*5.0 > price)
                 drivesOfPrice.add(drive);
         return drivesOfPrice;
+    }
+
+    public void updateDrive(final Drive toUpdate, final Action action) {
+
+        addDrive(toUpdate, action);
+    }
+
+    public void addDrive(Drive driveToAdd, final Action action) {
+        Task<Void> task = drivesRef.push().setValue(driveToAdd);//push- had spacial key
+
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {//add to database success
+                action.onSuccess();
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {//add to database fail
+                action.onFailure(e);
+            }
+        });
+
     }
 
 }
