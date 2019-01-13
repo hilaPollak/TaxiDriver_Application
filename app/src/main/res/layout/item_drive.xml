@@ -7,22 +7,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="20dp">
+        android:layout_marginLeft="25dp"
+        >
 
         <TextView
             android:id="@+id/name_item_drive"
-            android:layout_width="wrap_content"
+            android:layout_width="353dp"
             android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_action_drivername"
             android:text="@string/Name"
             android:textColor="@color/LightBlue"
+            android:textSize="20dp"
 
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/phone_item_drive"
-            android:text="@string/Phone"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/address"
+            android:textColor="@color/LightBlue" />
 
     </LinearLayout>
 
