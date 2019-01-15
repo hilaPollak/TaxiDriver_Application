@@ -1,7 +1,10 @@
 package com.example.hila.myfirstapplication.controller;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.SmsManager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -92,7 +96,6 @@ public class AvailableDrivesFragment extends Fragment {
             holder.nameTextView.setTextSize(20);
             holder.phoneTextView.setText(drive.getStartAddress());
             holder.phoneTextView.setTextSize(16);
-            // textDetails.setText(drive.toString());
 
         }
 
@@ -135,12 +138,30 @@ public class AvailableDrivesFragment extends Fragment {
                         addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                Drive drive = drives.get(getAdapterPosition());
+                                final Drive drive = drives.get(getAdapterPosition());
 
-                                fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
+                                fb.changeStatus(drive.getId(), driver, DriveStatus.AVAILABLE, new IDataBase.Action() {
                                     @Override
                                     public void onSuccess() {
-                                        Toast.makeText(getActivity(), "ההרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        builder.setMessage("The drive is in your care!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        String mail = drive.getEmail();
+                                                        String[] mails = mail.split(",");
+                                                        Intent in = new Intent(Intent.ACTION_SEND);
+                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
+                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
+                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
+                                                        in.setType("message/rfc822");
+                                                        startActivity(Intent.createChooser(in, "choose email"));
+                                                    }
+                                                });
+                                        AlertDialog alert = builder.create();
+                                        alert.show();
+
 
                                     }
 
