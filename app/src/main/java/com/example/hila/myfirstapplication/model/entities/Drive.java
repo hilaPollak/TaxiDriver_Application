@@ -15,9 +15,20 @@ public class Drive {
     // private Date StartTime;//start of driving
     // private Date EndTime;//end of driving
     private String Name;//client's name
-    private long PhoneNumber;//client's phone number
+    private String PhoneNumber;//client's phone number
     private String Email;//client's email
     private String DriverName;//driver name
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+
 
 
 
@@ -32,12 +43,12 @@ public class Drive {
      * @param phoneText
      * @param emailText
      */
-    public Drive(DriveStatus driveStatus, String startAddress1, String endAddress1, Date c, Date endTime, String nameText, String phoneText, String emailText){}
+    public Drive(DriveStatus driveStatus, String startAddress1, String endAddress1, Date c, Date endTime, String nameText, String phoneText, String emailText,String driverName){}
 
     /**
      this func build constructor
      */
-    public Drive(DriveStatus statusOfRide, String startAddress, String endAddress, Date startTime, Date endTime, String name, long phoneNumber, String email) {
+    public Drive(DriveStatus statusOfRide, String startAddress, String endAddress, Date startTime, Date endTime, String name, String phoneNumber, String email) {
         StatusOfRide = statusOfRide;
         StartAddress = startAddress;
         EndAddress = endAddress;
@@ -46,7 +57,7 @@ public class Drive {
         Name = name;
         PhoneNumber = phoneNumber;
         Email = email;
-        DriverName="";
+        DriverName=" a";
 
     }
 
@@ -151,7 +162,7 @@ public class Drive {
      this func return the phone num of client
      * @return   the client's phone number
      */
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return PhoneNumber;
     }
     /**
@@ -159,7 +170,7 @@ public class Drive {
      @param  phoneNumber  the phone number of client
      @return   null
      */
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
 

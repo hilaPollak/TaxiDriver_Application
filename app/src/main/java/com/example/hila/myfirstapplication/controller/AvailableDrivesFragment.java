@@ -27,10 +27,12 @@ import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
 import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
 import com.example.hila.myfirstapplication.model.entities.Drive;
+import com.example.hila.myfirstapplication.model.entities.DriveStatus;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @SuppressLint("ValidFragment")
 public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
@@ -43,9 +45,8 @@ public class AvailableDrivesFragment extends Fragment {
     String email;
 
     @SuppressLint("ValidFragment")
-    AvailableDrivesFragment(Driver e)
-    {
-        this.driver=e;
+    AvailableDrivesFragment(Driver e) {
+        this.driver = e;
     }
 
     @Override
@@ -53,7 +54,6 @@ public class AvailableDrivesFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
 
-        buttonChoose = v.findViewById(R.id.button_choose);
         textDetails = v.findViewById(R.id.text_details);
         details = v.findViewById(R.id.linear_details);
         details.setVisibility(View.GONE);
@@ -67,8 +67,8 @@ public class AvailableDrivesFragment extends Fragment {
         drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
 
         return v;
-   }
- 
+    }
+
 
     @Override
     public void onDestroy() {
@@ -126,6 +126,35 @@ public class AvailableDrivesFragment extends Fragment {
                                 Drive drive = drives.get(getAdapterPosition());
                                 textDetails.setText(drive.toString());
                                 details.setVisibility(View.VISIBLE);
+
+
+                                return true;
+                            }
+                        });
+                        MenuItem addDrive = menu.add(Menu.NONE, 1, 1, "take drive");
+                        addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                Drive drive = drives.get(getAdapterPosition());
+
+                                fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Toast.makeText(getActivity(), "ההרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception exception) {
+                                        Toast.makeText(getActivity(), "הלקיחה נכשלה", Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    @Override
+                                    public void onProgress(String status, double percent) {
+                                        ;
+                                    }
+                                });
 
 
                                 return true;

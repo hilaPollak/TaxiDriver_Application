@@ -1,8 +1,10 @@
 package com.example.hila.myfirstapplication.model.backend;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.example.hila.myfirstapplication.model.entities.Drive;
+import com.example.hila.myfirstapplication.model.entities.DriveStatus;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
 import java.util.ArrayList;
@@ -44,10 +46,12 @@ public interface IDataBase {
 
     List<Drive> getAvailableDrivesOfMyLocation(Location location);
 
-   // List<Drive> getDrivesOfDate(Date date);
+    // List<Drive> getDrivesOfDate(Date date);
 
     List<Drive> getDrivesOfPrice(double price);
+
     Driver getDriver(String email);
 
+    void changeStatus(String driveID, Driver driver, final DriveStatus status,final Action action);
 
 }

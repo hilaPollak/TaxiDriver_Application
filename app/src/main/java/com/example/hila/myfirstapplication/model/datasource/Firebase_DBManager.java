@@ -1,8 +1,10 @@
 package com.example.hila.myfirstapplication.model.datasource;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
 import com.example.hila.myfirstapplication.model.entities.Drive;
@@ -154,7 +156,9 @@ public class Firebase_DBManager implements IDataBase {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Drive drive = dataSnapshot.getValue(Drive.class);
+                    drive.setId(dataSnapshot.getKey());
                     driveList.add(drive);
+
 
                     notifyDataChange.onDataChange(driveList);
                 }
@@ -390,5 +394,17 @@ public class Firebase_DBManager implements IDataBase {
                 d=driver;
 
         return d;
+    }
+
+    @Override
+    public void changeStatus(String driveID, Driver driver, final DriveStatus status, final Action action) {
+        drivesRef.child(driveID).child("driverName").setValue(driver.getFirstName());
+        drivesRef.child(driveID).child("statusOfRide").setValue(status)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        action.onSuccess();
+                    }
+                });
     }
 }
