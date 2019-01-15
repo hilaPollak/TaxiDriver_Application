@@ -33,7 +33,7 @@
     <string name="my_drives">My Drives</string>
     <string name="exit"> Exit</string>
     <string name="title_activity_dprofile">Dprofile</string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="fragment_available_drives">Available Drives;</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

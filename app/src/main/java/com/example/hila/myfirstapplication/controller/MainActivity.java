@@ -23,7 +23,6 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    List<Driver> l = new ArrayList<>();
 
     TextView textView;
     EditText emailText;
@@ -81,27 +80,7 @@ public class MainActivity extends Activity {
 
     }
 
-    protected void t() {
-        Firebase_DBManager.notifyToDriverList(new Firebase_DBManager.NotifyDataChange<List<Driver>>() {
-
-
-            @Override
-            public void onDataChange(List<Driver> obj) {
-               // l = obj;
-            }
-
-            @Override
-            public void onFailure(Exception exp) {
-                Toast.makeText(getBaseContext(), exp.getMessage().toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-        Driver d = l.get(0);
-
-    }
-
-    protected void GosignUpActivity(View view) {
+       protected void GosignUpActivity(View view) {
 
 
         Intent intent = new Intent(getApplicationContext(), SignUp.class);

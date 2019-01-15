@@ -1,5 +1,8 @@
 package com.example.hila.myfirstapplication.controller;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,65 +23,52 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hila.myfirstapplication.R;
+import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
+import com.example.hila.myfirstapplication.model.backend.IDataBase;
 import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
 import com.example.hila.myfirstapplication.model.entities.Drive;
+import com.example.hila.myfirstapplication.model.entities.Driver;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@SuppressLint("ValidFragment")
 public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
     public List<Drive> drives;
     public TextView textDetails;
     public Button buttonChoose;
-    @Nullable
+    IDataBase fb;
+    Driver driver;
+    String email;
+
+    @SuppressLint("ValidFragment")
+    AvailableDrivesFragment(Driver e)
+    {
+        this.driver=e;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
 
-        buttonChoose=v.findViewById(R.id.button_choose);
-        textDetails=v.findViewById(R.id.text_details);
-        details=v.findViewById(R.id.linear_details);
+        buttonChoose = v.findViewById(R.id.button_choose);
+        textDetails = v.findViewById(R.id.text_details);
+        details = v.findViewById(R.id.linear_details);
         details.setVisibility(View.GONE);
 
         drivesRecyclerView = v.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        fb = FactoryDataBase.getDataBase();
+        drives = fb.getAvailableDrives();
+        drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
 
-
-        //List <Drive> availableDrives = new ArrayList<>();
-       // availableDrives=Firebase_DBManager.getAvailableDrives();
-        //if (drivesRecyclerView.getAdapter() == null) {
-          //  drives = availableDrives;
-          //  drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
-      //  } else
-         //   drivesRecyclerView.getAdapter().notifyDataSetChanged();
-
-
-        Firebase_DBManager.notifyToDriveList(new Firebase_DBManager.NotifyDataChange<List<Drive>>() {
-
-            @Override
-            public void onDataChange(List<Drive> obj) {
-                if (drivesRecyclerView.getAdapter() == null) {
-                    //drives = Firebase_DBManager.getAvailableDrives();
-                    drives=obj;
-                    drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
-                } else
-                    drivesRecyclerView.getAdapter().notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                Toast.makeText(getActivity(), "error to get drives list\n" + exception.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
         return v;
-    }
+   }
+ 
 
     @Override
     public void onDestroy() {
@@ -102,11 +92,9 @@ public class AvailableDrivesFragment extends Fragment {
             holder.nameTextView.setTextSize(20);
             holder.phoneTextView.setText(drive.getStartAddress());
             holder.phoneTextView.setTextSize(16);
-           // textDetails.setText(drive.toString());
+            // textDetails.setText(drive.toString());
 
         }
-
-
 
 
         @Override
@@ -125,7 +113,6 @@ public class AvailableDrivesFragment extends Fragment {
                 nameTextView = itemView.findViewById(R.id.name_item_drive);
 
 
-
                 itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
 
                     @Override
@@ -139,9 +126,6 @@ public class AvailableDrivesFragment extends Fragment {
                                 Drive drive = drives.get(getAdapterPosition());
                                 textDetails.setText(drive.toString());
                                 details.setVisibility(View.VISIBLE);
-
-
-
 
 
                                 return true;

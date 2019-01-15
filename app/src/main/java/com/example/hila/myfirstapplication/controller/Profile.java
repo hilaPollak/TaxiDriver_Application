@@ -1,8 +1,10 @@
 package com.example.hila.myfirstapplication.controller;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,9 +22,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.hila.myfirstapplication.R;
+import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
+import com.example.hila.myfirstapplication.model.backend.IDataBase;
+import com.example.hila.myfirstapplication.model.entities.Driver;
 
 public class Profile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Driver driver;
+    IDataBase fb;
+    String email;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,13 @@ public class Profile extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        SharedPreferences sharedpreferences;
+        sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+        email = sharedpreferences.getString("email", "");
+        fb = FactoryDataBase.getDataBase();
+        driver = fb.getDriver(email);
     }
 
     @Override
@@ -78,7 +96,7 @@ public class Profile extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_see_all_drives) {
-            fragment = new AvailableDrivesFragment();
+            fragment = new AvailableDrivesFragment(driver);
         } else if (id == R.id.nav_see_my_drives) {
             fragment = new MyDrivesFragment();
 
@@ -115,7 +133,7 @@ public class Profile extends AppCompatActivity
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
+                    .replace(R.id.frame_container, fragment).addToBackStack(null).commit();
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

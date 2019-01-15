@@ -32,6 +32,32 @@ public class Firebase_DBManager implements IDataBase {
     static DatabaseReference drivesRef;//.ref of drives
     static DatabaseReference driverRef;//ref of drivers
 
+    public Firebase_DBManager() {
+        notifyToDriveList(new NotifyDataChange<List<Drive>>() {
+            @Override
+            public void onDataChange(List<Drive> obj) {
+
+            }
+
+            @Override
+            public void onFailure(Exception exp) {
+
+            }
+        });
+        notifyToDriverList(new NotifyDataChange<List<Driver>>() {
+                               @Override
+                               public void onDataChange(List<Driver> obj) {
+
+                               }
+
+                               @Override
+                               public void onFailure(Exception exp) {
+
+                               }
+                           }
+        );
+    }
+
     public static List<Drive> getDriveList() {
         return driveList;
     }
@@ -54,7 +80,7 @@ public class Firebase_DBManager implements IDataBase {
     //region Methods
 
 
-   @Override
+    @Override
     public void addDriver(Driver driverToAdd, final Action action) {
         Task<Void> task = driverRef.push().setValue(driverToAdd);
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -67,18 +93,17 @@ public class Firebase_DBManager implements IDataBase {
 
     @Override
     public void isValidDriverAuthentication(String emailForCheck, final String passwordForCheck, final Action action) {
-        Query query  = driverRef.orderByChild("email").equalTo(emailForCheck);
+        Query query = driverRef.orderByChild("email").equalTo(emailForCheck);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    Driver checkDriver=dataSnapshot.getChildren().iterator().next().getValue(Driver.class);
-                    if(checkDriver.getPassword().equals(passwordForCheck))
+                if (dataSnapshot.exists()) {
+                    Driver checkDriver = dataSnapshot.getChildren().iterator().next().getValue(Driver.class);
+                    if (checkDriver.getPassword().equals(passwordForCheck))
                         action.onSuccess();
                     else
                         action.onFailure(new Exception("Password is uncorrect"));
-                }
-                else
+                } else
                     action.onFailure(new Exception("User doesn't exist"));
             }
 
@@ -93,12 +118,14 @@ public class Firebase_DBManager implements IDataBase {
 
     /**
      * interface NotifyDataChange. For update the list from the firebase.
+     *
      * @param <T>
      */
-    public interface NotifyDataChange<T>{
-     //   void OnDataChanged(List<Drive> obj);
+    public interface NotifyDataChange<T> {
+        //   void OnDataChanged(List<Drive> obj);
 
         void onDataChange(T obj);
+
         void onFailure(Exception exp);
     }
 
@@ -108,16 +135,17 @@ public class Firebase_DBManager implements IDataBase {
 
     /**
      * notifyToDriveList function. Notify when the data change.
+     *
      * @param notifyDataChange NotifyDataChange<List<Drive>>.
      */
-    public static void notifyToDriveList(final NotifyDataChange<List<Drive>> notifyDataChange){
-        if(notifyDataChange != null){
-            if(driveRefChildEventListener != null){
+    public static void notifyToDriveList(final NotifyDataChange<List<Drive>> notifyDataChange) {
+        if (notifyDataChange != null) {
+            if (driveRefChildEventListener != null) {
                 notifyDataChange.onFailure(new Exception("first unNotify drive list"));
                 return;
             }
             driveList.clear();
-            driveRefChildEventListener = new ChildEventListener(){
+            driveRefChildEventListener = new ChildEventListener() {
                 /**
                  * onChildAdded - add the new to the list
                  * @param dataSnapshot DataSnapshot
@@ -139,8 +167,8 @@ public class Firebase_DBManager implements IDataBase {
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Drive drive = dataSnapshot.getValue(Drive.class);
-                    for (int i=0; i<driveList.size(); i++){
-                        if(driveList.get(i).equals(drive)) {
+                    for (int i = 0; i < driveList.size(); i++) {
+                        if (driveList.get(i).equals(drive)) {
                             driveList.set(i, drive);
                             break;
                         }
@@ -155,8 +183,8 @@ public class Firebase_DBManager implements IDataBase {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     Drive drive = dataSnapshot.getValue(Drive.class);
-                    for (int i=0; i<driveList.size(); i++){
-                        if(driveList.get(i).equals(drive)) {
+                    for (int i = 0; i < driveList.size(); i++) {
+                        if (driveList.get(i).equals(drive)) {
                             driveList.remove(i);
                             break;
                         }
@@ -181,8 +209,8 @@ public class Firebase_DBManager implements IDataBase {
     /**
      * stopNotifyToDriveList remove Event Listener
      */
-    public static void stopNotifyToDriveList(){
-        if(driveRefChildEventListener != null){
+    public static void stopNotifyToDriveList() {
+        if (driveRefChildEventListener != null) {
             drivesRef.removeEventListener(driveRefChildEventListener);
             driveRefChildEventListener = null;
         }
@@ -190,16 +218,17 @@ public class Firebase_DBManager implements IDataBase {
 
     /**
      * notifyToDriverList function. Notify when the data change.
+     *
      * @param notifyDataChange NotifyDataChange<List<Driver>>.
      */
-    public static void notifyToDriverList(final NotifyDataChange<List<Driver>> notifyDataChange){
-        if(notifyDataChange != null){
-            if(driverRefChildEventListener != null){
+    public static void notifyToDriverList(final NotifyDataChange<List<Driver>> notifyDataChange) {
+        if (notifyDataChange != null) {
+            if (driverRefChildEventListener != null) {
                 notifyDataChange.onFailure(new Exception("first unNotify driver list"));
                 return;
             }
             driverList.clear();
-            driverRefChildEventListener = new ChildEventListener(){
+            driverRefChildEventListener = new ChildEventListener() {
                 /**
                  * onChildAdded - add the new to the list
                  * @param dataSnapshot DataSnapshot
@@ -212,6 +241,7 @@ public class Firebase_DBManager implements IDataBase {
 
                     notifyDataChange.onDataChange(driverList);
                 }
+
                 /**
                  * onChildChanged- onChildChanged update the list
                  * @param dataSnapshot DataSnapshot
@@ -220,14 +250,15 @@ public class Firebase_DBManager implements IDataBase {
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Driver driver = dataSnapshot.getValue(Driver.class);
-                    for (int i=0; i<driverList.size(); i++){
-                        if(driverList.get(i).equals(driver)) {
+                    for (int i = 0; i < driverList.size(); i++) {
+                        if (driverList.get(i).equals(driver)) {
                             driverList.set(i, driver);
                             break;
                         }
                     }
                     notifyDataChange.onDataChange(driverList);
                 }
+
                 /**
                  * onChildRemoved update the list
                  * @param dataSnapshot DataSnapshot
@@ -235,8 +266,8 @@ public class Firebase_DBManager implements IDataBase {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     Driver driver = dataSnapshot.getValue(Driver.class);
-                    for (int i=0; i<driverList.size(); i++){
-                        if(driverList.get(i).equals(driver)) {
+                    for (int i = 0; i < driverList.size(); i++) {
+                        if (driverList.get(i).equals(driver)) {
                             driverList.remove(i);
                             break;
                         }
@@ -261,15 +292,15 @@ public class Firebase_DBManager implements IDataBase {
     /**
      * stopNotifyToDriverList remove Event Listener
      */
-    public static void stopNotifyToDriverList(){
-        if(driverRefChildEventListener != null){
+    public static void stopNotifyToDriverList() {
+        if (driverRefChildEventListener != null) {
             driverRef.removeEventListener(driverRefChildEventListener);
             driverRefChildEventListener = null;
         }
     }
 
 
-
+    @Override
     public List<String> getDriversNames() {
         List<String> driversNames = new ArrayList<>();
         for (Driver driver : driverList)
@@ -277,8 +308,8 @@ public class Firebase_DBManager implements IDataBase {
         return driversNames;
     }
 
-    //@Override
-    public static List<Drive> getAvailableDrives() {
+    @Override
+    public List<Drive> getAvailableDrives() {
         List<Drive> availableDrives = new ArrayList<>();
         for (Drive drive : driveList)
             if (drive.getStatusOfRide().toString().equals(DriveStatus.AVAILABLE.toString()))
@@ -286,7 +317,7 @@ public class Firebase_DBManager implements IDataBase {
         return availableDrives;
     }
 
-    //@Override
+    @Override
     public List<Drive> getEndedDrives() {
         List<Drive> endedDrives = new ArrayList<>();
         for (Drive drive : driveList)
@@ -295,8 +326,8 @@ public class Firebase_DBManager implements IDataBase {
         return endedDrives;
     }
 
-  //  @Override
-    public List<Drive> getMyDrive(Driver driver) {
+    @Override
+    public List<Drive> getMyDrives(Driver driver) {
         List<Drive> myDrives = new ArrayList<>();
         for (Drive drive : driveList)
             if (drive.getDriverName() == driver.getFirstName())
@@ -309,7 +340,7 @@ public class Firebase_DBManager implements IDataBase {
         return null;
     }
 
-   // @Override
+    @Override
     public List<Drive> getAvailableDrivesOfDestinationCity(String city) {
         List<Drive> availableDrivesOfDestinationCity = new ArrayList<>();
         for (Drive drive : driveList)
@@ -318,8 +349,8 @@ public class Firebase_DBManager implements IDataBase {
         return availableDrivesOfDestinationCity;
     }
 
-   // @Override
-    public List<Drive> getAvailableDrivesOfHisLocation(Location location) {
+    @Override
+    public List<Drive> getAvailableDrivesOfMyLocation(Location location) {
         List<Drive> myDrives = new ArrayList<>();
         for (Drive drive : driveList)
             if (new Location(drive.getEndAddress()).distanceTo(location) < 2000)
@@ -327,7 +358,7 @@ public class Firebase_DBManager implements IDataBase {
         return myDrives;
     }
 
-   // @Override
+    // @Override
   /*  public List<Drive> getDrivesOfDate(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         String dateStr = simpleDateFormat.format(date);
@@ -342,37 +373,22 @@ public class Firebase_DBManager implements IDataBase {
         return drivesOfDate;
     }*/
 
-   // @Override
+    @Override
     public List<Drive> getDrivesOfPrice(double price) {
         List<Drive> drivesOfPrice = new ArrayList<>();
         for (Drive drive : driveList)
-            if (new Location(drive.getEndAddress()).distanceTo(new Location(drive.getStartAddress()))/0/1000.0*5.0 > price)
+            if (new Location(drive.getEndAddress()).distanceTo(new Location(drive.getStartAddress())) / 0 / 1000.0 * 5.0 > price)
                 drivesOfPrice.add(drive);
         return drivesOfPrice;
     }
 
-    public void updateDrive(final Drive toUpdate, final Action action) {
+    @Override
+    public Driver getDriver(String email) {
+        Driver d = new Driver();
+        for (Driver driver : driverList)
+            if (driver.getEmail().equals(email))
+                d=driver;
 
-        addDrive(toUpdate, action);
+        return d;
     }
-
-    public void addDrive(Drive driveToAdd, final Action action) {
-        Task<Void> task = drivesRef.push().setValue(driveToAdd);//push- had spacial key
-
-        task.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {//add to database success
-                action.onSuccess();
-            }
-        });
-
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {//add to database fail
-                action.onFailure(e);
-            }
-        });
-
-    }
-
 }
