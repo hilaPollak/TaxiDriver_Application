@@ -334,7 +334,7 @@ public class Firebase_DBManager implements IDataBase {
     public List<Drive> getMyDrives(Driver driver) {
         List<Drive> myDrives = new ArrayList<>();
         for (Drive drive : driveList)
-            if (drive.getDriverName() == driver.getFirstName())
+            if (drive.getDriverName().equals(driver.getFirstName()))
                 myDrives.add(drive);
         return myDrives;
     }

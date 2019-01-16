@@ -107,7 +107,7 @@ public class Profile extends AppCompatActivity
         if (id == R.id.nav_see_all_drives) {
             fragment = new AvailableDrivesFragment(driver);
         } else if (id == R.id.nav_see_my_drives) {
-            fragment = new MyDrivesFragment();
+            fragment = new MyDrivesFragment(driver);
 
 
         } else if (id == R.id.nav_exit) {
