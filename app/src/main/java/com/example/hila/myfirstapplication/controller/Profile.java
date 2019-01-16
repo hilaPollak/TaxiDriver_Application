@@ -52,12 +52,21 @@ public class Profile extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Fragment fragment=new RandomDrive();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_container, fragment).commit();
+
 
         SharedPreferences sharedpreferences;
         sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         email = sharedpreferences.getString("email", "");
         fb = FactoryDataBase.getDataBase();
         driver = fb.getDriver(email);
+
+
+
+
     }
 
     @Override
