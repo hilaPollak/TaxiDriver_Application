@@ -140,7 +140,7 @@ public class AvailableDrivesFragment extends Fragment {
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives.get(getAdapterPosition());
 
-                                fb.changeStatus(drive.getId(), driver, DriveStatus.AVAILABLE, new IDataBase.Action() {
+                                fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
                                     @Override
                                     public void onSuccess() {
 
@@ -161,6 +161,7 @@ public class AvailableDrivesFragment extends Fragment {
                                                 });
                                         AlertDialog alert = builder.create();
                                         alert.show();
+                                        drives.remove(getAdapterPosition());
 
 
                                     }
