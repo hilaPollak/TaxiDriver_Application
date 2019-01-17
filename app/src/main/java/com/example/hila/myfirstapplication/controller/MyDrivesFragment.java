@@ -61,7 +61,6 @@ public class MyDrivesFragment extends Fragment {
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         fb = FactoryDataBase.getDataBase();
-        //  drives = fb.getAvailableDrives();
 
         drives = fb.getMyDrives(driver);
         drivesRecyclerView.setAdapter(new MyDrivesFragment.DrivesRecycleViewAdapter());
