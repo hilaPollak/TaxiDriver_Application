@@ -25,6 +25,21 @@
             android:name=".controller.Profile"
             android:label="@string/title_activity_xxx"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!-- my service -->
+        <service
+            android:name=".controller.NotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+
+        <receiver android:name=".controller.ToNotificationReceiver">
+            <intent-filter>
+                <action android:name="MyReceiver" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
