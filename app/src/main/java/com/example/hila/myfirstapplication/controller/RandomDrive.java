@@ -31,7 +31,7 @@ public class RandomDrive extends Fragment {
         price = v.findViewById(R.id.see_price);
 
 
-        class SyncTaskExample extends AsyncTask<Void, Void, Integer> {
+        class SyncTaskCount extends AsyncTask<Void, Void, Integer> {
             @Override
             protected Integer doInBackground(Void... voids) {
                 String chronoText = chronometer.getText().toString();
@@ -55,9 +55,9 @@ public class RandomDrive extends Fragment {
 
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
-                SyncTaskExample asyncTaskExample;
-                asyncTaskExample = new SyncTaskExample();
-                asyncTaskExample.execute();
+                SyncTaskCount asyncTaskCount;
+                asyncTaskCount = new SyncTaskCount();
+                asyncTaskCount.execute();
             }
         });
 
@@ -68,19 +68,10 @@ public class RandomDrive extends Fragment {
 
 
                 chronometer.stop();
-                SyncTaskExample asyncTaskExample;
-                asyncTaskExample = new SyncTaskExample();
+                SyncTaskCount asyncTaskExample;
+                asyncTaskExample = new SyncTaskCount();
                 asyncTaskExample.execute();
                 int money = asyncTaskExample.doInBackground();
-//
-//                String chronoText = chronometer.getText().toString();
-//                String array[] = chronoText.split(":");
-//                int minute = Integer.parseInt(array[0]);
-//                int money;
-//                if (minute == 0)
-//                    money = 5;
-//                else
-//                    money = minute * 2;
                 price.setVisibility(View.VISIBLE);
                 price.setText("the price is: " + money + " shekel");
 
