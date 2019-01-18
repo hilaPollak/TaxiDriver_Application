@@ -420,7 +420,7 @@ public class Firebase_DBManager implements IDataBase {
         Driver d = new Driver();
         for (Driver driver : driverList)
             if (driver.getEmail().equals(email))
-                d=driver;
+                d = driver;
 
         return d;
     }
