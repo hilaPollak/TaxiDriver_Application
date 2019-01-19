@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -135,7 +136,15 @@ public class MyDrivesFragment extends Fragment {
                         addContact.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                Toast.makeText(getActivity(), "add contact", Toast.LENGTH_LONG).show();
+                                Drive drive = drives.get(getAdapterPosition());
+                                Intent intent = new Intent(Intent.ACTION_INSERT);
+                                intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+
+                                intent.putExtra(ContactsContract.Intents.Insert.NAME, drive.getName());
+                                intent.putExtra(ContactsContract.Intents.Insert.PHONE, drive.getPhoneNumber());
+
+
+                                startActivity(intent);
 
 
                                 return true;
