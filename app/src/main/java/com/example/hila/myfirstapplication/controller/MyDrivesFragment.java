@@ -29,22 +29,25 @@ import com.example.hila.myfirstapplication.model.entities.Drive;
 import com.example.hila.myfirstapplication.model.entities.DriveStatus;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class MyDrivesFragment extends Fragment {
 
     IDataBase fb;
-    Driver driver;
-    public List<Drive> drives;
+    static Driver driver;
+    public List<Drive> drives=new ArrayList<>();
     public LinearLayout details;
     public TextView textDetails;
     public RecyclerView drivesRecyclerView;
 
 
+
     @SuppressLint("ValidFragment")
     MyDrivesFragment(Driver e) {
         this.driver = e;
+
     }
 
     @Nullable
@@ -66,12 +69,19 @@ public class MyDrivesFragment extends Fragment {
 
         fb = FactoryDataBase.getDataBase();
 
+
         drives = fb.getMyDrives(driver);
         drivesRecyclerView.setAdapter(new MyDrivesFragment.DrivesRecycleViewAdapter());
 
         return v;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        drives.clear();
+        drives = fb.getMyDrives(driver);
+        drivesRecyclerView.getAdapter().notifyDataSetChanged();
+    }
 
     @Override
     public void onDestroy() {
@@ -160,10 +170,10 @@ public class MyDrivesFragment extends Fragment {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives.get(getAdapterPosition());
-                                if (drive.getStatusOfRide().equals(DriveStatus.AVAILABLE))
+                                if (drive.getStatusOfRide().equals(DriveStatus.ENDING))
                                     Toast.makeText(getActivity(), "the drive already ending", Toast.LENGTH_LONG).show();
                                 else
-                                    fb.changeStatus(drive.getId(), driver, DriveStatus.AVAILABLE, new IDataBase.Action() {
+                                    fb.changeStatus(drive.getId(), driver, DriveStatus.ENDING, new IDataBase.Action() {
                                         @Override
                                         public void onSuccess() {
 

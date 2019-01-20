@@ -134,8 +134,6 @@ public class Firebase_DBManager implements IDataBase {
 
     private static ChildEventListener driveRefChildEventListener;
     private static ChildEventListener driverRefChildEventListener;
-    private static ChildEventListener serviceListener;
-
 
     /**
      * notifyToDriveList function. Notify when the data change.
@@ -145,35 +143,8 @@ public class Firebase_DBManager implements IDataBase {
     public static void notifyToDriveList(final NotifyDataChange<List<Drive>> notifyDataChange) {
         if (notifyDataChange != null) {
             if (driveRefChildEventListener != null) {
-                if (serviceListener != null) {
-                    notifyDataChange.onFailure(new Exception("first unNotify ClientRequest list"));
-                    return;
-                } else {
-                    serviceListener = new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            notifyDataChange.onDataChange(driveList);
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    };
-                    drivesRef.addChildEventListener(serviceListener);
-                    return;
-                }
+                notifyDataChange.onFailure(new Exception("first unNotify drive list"));
+                return;
             }
             driveList.clear();
             driveRefChildEventListener = new ChildEventListener() {
@@ -420,7 +391,7 @@ public class Firebase_DBManager implements IDataBase {
         Driver d = new Driver();
         for (Driver driver : driverList)
             if (driver.getEmail().equals(email))
-                d = driver;
+                d=driver;
 
         return d;
     }

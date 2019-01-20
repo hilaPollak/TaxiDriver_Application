@@ -44,16 +44,17 @@ import java.util.List;
 public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
-    public List<Drive> drives;
+    public List<Drive> drives=new ArrayList<>();
     public TextView textDetails;
     public Button buttonChoose;
     IDataBase fb;
     Driver driver;
-    String email;
+
 
     @SuppressLint("ValidFragment")
     AvailableDrivesFragment(Driver e) {
         this.driver = e;
+
 
     }
 
@@ -76,15 +77,25 @@ public class AvailableDrivesFragment extends Fragment {
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
         fb = FactoryDataBase.getDataBase();
         drives = fb.getAvailableDrives();
         drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
-        drivesRecyclerView.getAdapter().notifyDataSetChanged();
 
         return v;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        drives.clear();
+        drives = fb.getAvailableDrives();
+        drivesRecyclerView.getAdapter().notifyDataSetChanged();
+    }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onDestroy() {
@@ -159,30 +170,33 @@ public class AvailableDrivesFragment extends Fragment {
                                     @Override
                                     public void onSuccess() {
 
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                        builder.setMessage("The drive is in your care!")
-                                                .setCancelable(false)
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        String mail = drive.getEmail();
-                                                        String[] mails = mail.split(",");
-                                                        Intent in = new Intent(Intent.ACTION_SEND);
-                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
-                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
-                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
-                                                        in.setType("message/rfc822");
-                                                        startActivity(Intent.createChooser(in, "choose email"));
-                                                    }
-                                                });
-                                        AlertDialog alert = builder.create();
-                                        alert.show();
+//                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                                        builder.setMessage("The drive is in your care!")
+//                                                .setCancelable(false)
+//                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                                    public void onClick(DialogInterface dialog, int id) {
+//                                                        String mail = drive.getEmail();
+//                                                        String[] mails = mail.split(",");
+//                                                        Intent in = new Intent(Intent.ACTION_SEND);
+//                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
+//                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
+//                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
+//                                                        in.setType("message/rfc822");
+//                                                        startActivity(Intent.createChooser(in, "choose email"));
+//                                                    }
+//                                                });
+//                                        AlertDialog alert = builder.create();
+//                                        alert.show();
 
 
-                                        drives.remove(getAdapterPosition());
-                                        drivesRecyclerView.removeViewAt(getAdapterPosition());
-                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
-                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
-                                    }
+                                      drives.remove(getAdapterPosition());
+//                                        drivesRecyclerView.removeViewAt(getAdapterPosition());
+//                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
+//                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
+//                                        drives=fb.getAvailableDrives();
+
+                                        drivesRecyclerView.getAdapter().notifyDataSetChanged();
+                                   }
 
                                     @Override
                                     public void onFailure(Exception exception) {
