@@ -7,13 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,16 +54,23 @@ public class AvailableDrivesFragment extends Fragment {
     @SuppressLint("ValidFragment")
     AvailableDrivesFragment(Driver e) {
         this.driver = e;
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
 
         View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
 
         textDetails = v.findViewById(R.id.text_details);
         details = v.findViewById(R.id.linear_details);
         details.setVisibility(View.GONE);
+
+        getActivity().setTitle("Available Drives");
+
+
 
         drivesRecyclerView = v.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
@@ -74,11 +84,15 @@ public class AvailableDrivesFragment extends Fragment {
     }
 
 
+
     @Override
     public void onDestroy() {
         Firebase_DBManager.stopNotifyToDriveList();
         super.onDestroy();
     }
+
+
+
 
     public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder>
 
@@ -161,9 +175,12 @@ public class AvailableDrivesFragment extends Fragment {
                                                 });
                                         AlertDialog alert = builder.create();
                                         alert.show();
+
+
                                         drives.remove(getAdapterPosition());
-
-
+                                        drivesRecyclerView.removeViewAt(getAdapterPosition());
+                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
+                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
                                     }
 
                                     @Override
@@ -182,6 +199,8 @@ public class AvailableDrivesFragment extends Fragment {
                                 return true;
                             }
                         });
+
+
                     }
                 });
             }

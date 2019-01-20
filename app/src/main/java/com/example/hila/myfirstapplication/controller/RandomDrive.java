@@ -57,6 +57,8 @@ public class RandomDrive extends Fragment {
         chronometer = (Chronometer) v.findViewById(R.id.chronometer);
         price = v.findViewById(R.id.see_price);
 
+        getActivity().setTitle("Random Drive");
+
 
         start = (Button) v.findViewById(R.id.start);
         start.setOnClickListener(new View.OnClickListener() {

@@ -57,6 +57,9 @@ public class MyDrivesFragment extends Fragment {
         details = v.findViewById(R.id.linear_details_my_drive);
         details.setVisibility(View.GONE);
 
+        getActivity().setTitle("My Drives");
+
+
         drivesRecyclerView = v.findViewById(R.id.my_drive_list);
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -157,10 +160,10 @@ public class MyDrivesFragment extends Fragment {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives.get(getAdapterPosition());
-                                if (drive.getStatusOfRide().equals(DriveStatus.ENDING))
+                                if (drive.getStatusOfRide().equals(DriveStatus.AVAILABLE))
                                     Toast.makeText(getActivity(), "the drive already ending", Toast.LENGTH_LONG).show();
                                 else
-                                    fb.changeStatus(drive.getId(), driver, DriveStatus.ENDING, new IDataBase.Action() {
+                                    fb.changeStatus(drive.getId(), driver, DriveStatus.AVAILABLE, new IDataBase.Action() {
                                         @Override
                                         public void onSuccess() {
 
