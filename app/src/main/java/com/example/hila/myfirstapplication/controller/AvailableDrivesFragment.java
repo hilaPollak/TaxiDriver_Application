@@ -79,6 +79,7 @@ public class AvailableDrivesFragment extends Fragment {
         fb = FactoryDataBase.getDataBase();
         drives = fb.getAvailableDrives();
         drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
+        drivesRecyclerView.getAdapter().notifyDataSetChanged();
 
         return v;
     }
