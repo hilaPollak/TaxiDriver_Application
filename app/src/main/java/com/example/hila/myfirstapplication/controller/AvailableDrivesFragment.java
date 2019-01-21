@@ -24,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
     public List<Drive> drives=new ArrayList<>();
+    public List<Drive> drives2;
     public TextView textDetails;
     public Button buttonChoose;
     IDataBase fb;
@@ -56,6 +59,11 @@ public class AvailableDrivesFragment extends Fragment {
         this.driver = e;
 
 
+    }
+
+    public AvailableDrivesFragment(List<Drive> drives) {
+        this.drives = drives;
+        drives2 = new ArrayList<>(drives); // copy of the list
     }
 
     @Override
@@ -106,6 +114,7 @@ public class AvailableDrivesFragment extends Fragment {
 
 
 
+
     public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder>
 
     {
@@ -130,6 +139,42 @@ public class AvailableDrivesFragment extends Fragment {
         public int getItemCount() {
             return drives.size();
         }
+
+//        @Override
+//        public Filter getFilter() {
+//            return filter;
+//        }
+//        private Filter filter = new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                List<Drive> filteredList=new ArrayList<>();//new list that contained only filtered items
+//                if (constraint==null || constraint.length()==0)//we what to show all the results becuse we don't what filtering
+//                {
+//                    filteredList.addAll(drives2);
+//                }
+//                else{ //we what to filter the list
+//                    String filterPattern=constraint.toString().toLowerCase().trim(); // sting that takes the input
+//                    for (Drive item : drives2){
+//                        if (item.getName().toLowerCase().contains((filterPattern)))
+//                        {
+//                            filteredList.add(item);
+//                        }
+//                    }
+//                }
+//                FilterResults results = new FilterResults();
+//                results.values = filteredList;
+//
+//                return results;
+//            }
+//
+//
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                drives.clear();
+//                drives.addAll((List)results.values);
+//            }
+//        };
+//
 
         class DriveViewHolder extends RecyclerView.ViewHolder {
             TextView phoneTextView;
