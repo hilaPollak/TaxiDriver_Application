@@ -17,6 +17,7 @@ public class Drive {
     private String PhoneNumber;//client's phone number
     private String Email;//client's email
     private String DriverName;//driver name
+    private String id;
 
 
 
@@ -212,6 +213,6 @@ public class Drive {
         this.id = id;
     }
 
-    private String id;
+
 
 }

@@ -195,7 +195,7 @@ public class AvailableDrivesFragment extends Fragment {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives.get(getAdapterPosition());
-
+//FROM HERE PUT IN DO IN BACKGROUND
                                 fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
                                     @Override
                                     public void onSuccess() {
@@ -224,6 +224,7 @@ public class AvailableDrivesFragment extends Fragment {
 //                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
 //                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
 //                                        drives=fb.getAvailableDrives();
+//UNTIL HERE DO IN BACKGROUND
 
                                         drivesRecyclerView.getAdapter().notifyDataSetChanged();
                                    }
