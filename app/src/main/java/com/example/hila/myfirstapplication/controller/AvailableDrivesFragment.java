@@ -24,8 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,7 +45,6 @@ public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
     public List<Drive> drives=new ArrayList<>();
-    //public List<Drive> drives2;
     public TextView textDetails;
     public Button buttonChoose;
     IDataBase fb;
@@ -59,11 +56,6 @@ public class AvailableDrivesFragment extends Fragment {
         this.driver = e;
 
 
-    }
-
-    public AvailableDrivesFragment(List<Drive> drives) {
-        this.drives = drives;
-        //drives2 = new ArrayList<>(drives); // copy of the list
     }
 
     @Override
@@ -114,7 +106,6 @@ public class AvailableDrivesFragment extends Fragment {
 
 
 
-
     public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder>
 
     {
@@ -140,7 +131,8 @@ public class AvailableDrivesFragment extends Fragment {
             return drives.size();
         }
 
-//        @Override
+
+//@Override
 //        public Filter getFilter() {
 //            return filter;
 //        }
@@ -175,6 +167,7 @@ public class AvailableDrivesFragment extends Fragment {
 //            }
 //        };
 //
+
 
         class DriveViewHolder extends RecyclerView.ViewHolder {
             TextView phoneTextView;
@@ -215,23 +208,23 @@ public class AvailableDrivesFragment extends Fragment {
                                     @Override
                                     public void onSuccess() {
 
-//                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                                        builder.setMessage("The drive is in your care!")
-//                                                .setCancelable(false)
-//                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                                    public void onClick(DialogInterface dialog, int id) {
-//                                                        String mail = drive.getEmail();
-//                                                        String[] mails = mail.split(",");
-//                                                        Intent in = new Intent(Intent.ACTION_SEND);
-//                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
-//                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
-//                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
-//                                                        in.setType("message/rfc822");
-//                                                        startActivity(Intent.createChooser(in, "choose email"));
-//                                                    }
-//                                                });
-//                                        AlertDialog alert = builder.create();
-//                                        alert.show();
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        builder.setMessage("The drive is in your care!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        String mail = drive.getEmail();
+                                                        String[] mails = mail.split(",");
+                                                        Intent in = new Intent(Intent.ACTION_SEND);
+                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
+                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
+                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
+                                                        in.setType("message/rfc822");
+                                                        startActivity(Intent.createChooser(in, "choose email"));
+                                                    }
+                                                });
+                                        AlertDialog alert = builder.create();
+                                        alert.show();
 
 
                                       drives.remove(getAdapterPosition());

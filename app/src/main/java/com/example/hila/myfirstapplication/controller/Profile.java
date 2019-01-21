@@ -1,6 +1,7 @@
 package com.example.hila.myfirstapplication.controller;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -112,6 +113,7 @@ public class Profile extends AppCompatActivity
 
         if (id == R.id.nav_see_all_drives) {
             fragment = new AvailableDrivesFragment(driver);
+
         } else if (id == R.id.nav_see_my_drives) {
             fragment = new MyDrivesFragment(driver);
 
@@ -150,9 +152,12 @@ public class Profile extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).addToBackStack(null).commit();
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+
+
         }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
 
     }
