@@ -47,7 +47,7 @@ public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
     public List<Drive> drives=new ArrayList<>();
-    public List<Drive> drives2;
+    //public List<Drive> drives2;
     public TextView textDetails;
     public Button buttonChoose;
     IDataBase fb;
@@ -63,7 +63,7 @@ public class AvailableDrivesFragment extends Fragment {
 
     public AvailableDrivesFragment(List<Drive> drives) {
         this.drives = drives;
-        drives2 = new ArrayList<>(drives); // copy of the list
+        //drives2 = new ArrayList<>(drives); // copy of the list
     }
 
     @Override
