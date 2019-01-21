@@ -29,14 +29,15 @@ import com.example.hila.myfirstapplication.model.entities.Drive;
 import com.example.hila.myfirstapplication.model.entities.DriveStatus;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class MyDrivesFragment extends Fragment {
 
-    IDataBase fb;
+    IDataBase fb = FactoryDataBase.getDataBase();
     Driver driver;
-    public List<Drive> drives;
+    public List<Drive> drives=new ArrayList<>();
     public LinearLayout details;
     public TextView textDetails;
     public RecyclerView drivesRecyclerView;
@@ -64,7 +65,7 @@ public class MyDrivesFragment extends Fragment {
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        fb = FactoryDataBase.getDataBase();
+     //   fb = FactoryDataBase.getDataBase();
 
         drives = fb.getMyDrives(driver);
         drivesRecyclerView.setAdapter(new MyDrivesFragment.DrivesRecycleViewAdapter());

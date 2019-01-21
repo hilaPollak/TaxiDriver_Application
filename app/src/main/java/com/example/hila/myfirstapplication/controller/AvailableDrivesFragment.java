@@ -47,7 +47,9 @@ public class AvailableDrivesFragment extends Fragment {
     public List<Drive> drives=new ArrayList<>();
     public TextView textDetails;
     public Button buttonChoose;
-    IDataBase fb;
+    IDataBase fb = FactoryDataBase.getDataBase();
+
+
     Driver driver;
 
 
@@ -78,24 +80,14 @@ public class AvailableDrivesFragment extends Fragment {
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        fb = FactoryDataBase.getDataBase();
         drives = fb.getAvailableDrives();
         drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
 
         return v;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        drives.clear();
-        drives = fb.getAvailableDrives();
-        drivesRecyclerView.getAdapter().notifyDataSetChanged();
-    }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+
+
 
     @Override
     public void onDestroy() {
@@ -227,7 +219,7 @@ public class AvailableDrivesFragment extends Fragment {
                                         alert.show();
 
 
-                                      drives.remove(getAdapterPosition());
+                                   //   drives.remove(getAdapterPosition());
 //                                        drivesRecyclerView.removeViewAt(getAdapterPosition());
 //                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
 //                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
