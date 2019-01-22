@@ -15,15 +15,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,26 +48,22 @@ import java.util.List;
 public class AvailableDrivesFragment extends Fragment {
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
-    public List<Drive> drives=new ArrayList<>();
+    public List<Drive> drives = new ArrayList<>();
     public TextView textDetails;
     public Button buttonChoose;
     IDataBase fb = FactoryDataBase.getDataBase();
-
+    private DrivesRecycleViewAdapter adapter;
+    private Menu menu;
 
     Driver driver;
-
 
     @SuppressLint("ValidFragment")
     AvailableDrivesFragment(Driver e) {
         this.driver = e;
-
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
 
         View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
 
@@ -73,21 +73,17 @@ public class AvailableDrivesFragment extends Fragment {
 
         getActivity().setTitle("Available Drives");
 
-
-
         drivesRecyclerView = v.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
+        adapter = new DrivesRecycleViewAdapter();
         drives = fb.getAvailableDrives();
-        drivesRecyclerView.setAdapter(new DrivesRecycleViewAdapter());
+        drivesRecyclerView.setAdapter(adapter);
+
+        setHasOptionsMenu(true);
 
         return v;
     }
-
-
-
 
     @Override
     public void onDestroy() {
@@ -96,11 +92,47 @@ public class AvailableDrivesFragment extends Fragment {
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        //   menu.clear();
+        inflater.inflate(R.menu.search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();//here stop working
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                try {
+                    adapter.getFilter().filter(newText);
+                } catch (Exception r) {
+                    r.printStackTrace();
+                }
+
+                return false;
+            }
+        });
+    }
 
 
-    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder>
+    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder> implements Filterable
 
     {
+        public List<Drive> drives2;
+        public List<Drive> drivefull;
+
+        public DrivesRecycleViewAdapter() {
+            this.drives2 = drives;
+            drivefull = new ArrayList<>(drives);
+
+        }
+
+
         @Override
         public DriveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.item_drive, parent, false);
@@ -123,42 +155,51 @@ public class AvailableDrivesFragment extends Fragment {
             return drives.size();
         }
 
+        @Override
+        public Filter getFilter() {
 
-//@Override
-//        public Filter getFilter() {
-//            return filter;
-//        }
-//        private Filter filter = new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence constraint) {
-//                List<Drive> filteredList=new ArrayList<>();//new list that contained only filtered items
-//                if (constraint==null || constraint.length()==0)//we what to show all the results becuse we don't what filtering
-//                {
-//                    filteredList.addAll(drives2);
-//                }
-//                else{ //we what to filter the list
-//                    String filterPattern=constraint.toString().toLowerCase().trim(); // sting that takes the input
-//                    for (Drive item : drives2){
-//                        if (item.getName().toLowerCase().contains((filterPattern)))
-//                        {
-//                            filteredList.add(item);
-//                        }
-//                    }
-//                }
-//                FilterResults results = new FilterResults();
-//                results.values = filteredList;
-//
-//                return results;
-//            }
-//
-//
-//            @Override
-//            protected void publishResults(CharSequence constraint, FilterResults results) {
-//                drives.clear();
-//                drives.addAll((List)results.values);
-//            }
-//        };
-//
+            return filter;
+        }
+
+        public Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<Drive> filteredList = new ArrayList<>();//new list that contained only filtered items
+                if (constraint == null || constraint.length() == 0)//we what to show all the results becuse we don't what filtering
+                {
+                    filteredList.clear();
+                    filteredList.addAll(drives);
+                } else { //we what to filter the list
+                    String filterPattern = constraint.toString().toLowerCase().trim(); // sting that takes the input
+                    for (Drive item : drives) {
+                        if (item.getName().toLowerCase().contains((filterPattern))) {
+                            filteredList.add(item);
+                            notifyDataSetChanged();
+
+                        }
+                    }
+
+                }
+                if (constraint == null || constraint.length() == 0)//we what to show all the results becuse we don't what filtering
+                {
+                    filteredList.clear();
+                    filteredList.addAll(drives);
+                    notifyDataSetChanged();
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+
+                return results;
+            }
+
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                drives.clear();
+                drives.addAll((List) results.values);
+                notifyDataSetChanged();
+            }
+        };
 
 
         class DriveViewHolder extends RecyclerView.ViewHolder {
@@ -195,7 +236,7 @@ public class AvailableDrivesFragment extends Fragment {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives.get(getAdapterPosition());
-//FROM HERE PUT IN DO IN BACKGROUND
+
                                 fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
                                     @Override
                                     public void onSuccess() {
@@ -219,15 +260,11 @@ public class AvailableDrivesFragment extends Fragment {
                                         alert.show();
 
 
-                                   //   drives.remove(getAdapterPosition());
-//                                        drivesRecyclerView.removeViewAt(getAdapterPosition());
-//                                        drivesRecyclerView.getAdapter().notifyItemRemoved(getAdapterPosition());
-//                                        drivesRecyclerView.getAdapter().notifyItemRangeChanged(getAdapterPosition(), drives.size());
-//                                        drives=fb.getAvailableDrives();
-//UNTIL HERE DO IN BACKGROUND
+                                        drives.remove(getAdapterPosition());
+
 
                                         drivesRecyclerView.getAdapter().notifyDataSetChanged();
-                                   }
+                                    }
 
                                     @Override
                                     public void onFailure(Exception exception) {
