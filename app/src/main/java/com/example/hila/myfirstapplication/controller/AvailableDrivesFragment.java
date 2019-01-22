@@ -190,7 +190,10 @@ public class AvailableDrivesFragment extends Fragment {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
                     for (Drive item : drivefull) {
-                        if (item.getName().toLowerCase().contains(filterPattern)) {
+                        String string =item.getStartAddress();
+                        String[] parts = string.split(", ");
+                        String part2 = parts[1]; // city
+                        if (part2.toLowerCase().contains(filterPattern)) {
                             filteredList.add(item);
                         }
                     }
