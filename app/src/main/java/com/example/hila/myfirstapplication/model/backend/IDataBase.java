@@ -53,5 +53,9 @@ public interface IDataBase {
     Driver getDriver(String email);
 
     void changeStatus(Drive drive, Driver driver, final DriveStatus status,final Action action);
+    List<String> getDistance();
+    List<Drive> getDrivesByDistance(String loc);
+
+
 
 }

@@ -446,4 +446,26 @@ public class Firebase_DBManager implements IDataBase {
                 });
 
     }
+  ///////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public List<String> getDistance() {
+        List<String> distance = new ArrayList<String>();
+        distance.add("all");
+        for (Drive drive : driveList)
+            if (drive.getStatusOfRide().toString().equals(DriveStatus.AVAILABLE.toString()))
+                distance.add(drive.getEmail());
+        return distance;
+    }
+
+    @Override
+    public List<Drive> getDrivesByDistance(String loc) {
+        List<Drive> locationDrives = new ArrayList<>();
+        for (Drive drive : driveList)
+            if (drive.getStatusOfRide().toString().equals(DriveStatus.AVAILABLE.toString()))
+                if (drive.getEmail().equals(loc))
+                    locationDrives.add(drive);
+        return locationDrives;
+    }
+
 }

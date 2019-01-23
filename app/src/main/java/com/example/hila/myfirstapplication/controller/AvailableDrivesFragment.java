@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
@@ -55,6 +56,8 @@ public class AvailableDrivesFragment extends Fragment {
     IDataBase fb = FactoryDataBase.getDataBase();
     private DrivesRecycleViewAdapter adapter;
     private Menu menu;
+    CheckBox checkDistance;
+    public boolean flag;
 
     Driver driver;
 
@@ -67,7 +70,23 @@ public class AvailableDrivesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
+        checkDistance = v.findViewById(R.id.distance_check);
+        checkDistance.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                if (!checkDistance.isChecked()) {
+                    flag = false;
+                }
+                if (checkDistance.isChecked()) {
+                    flag = true;
+                }
+                adapter = new DrivesRecycleViewAdapter(drives);
+                drivesRecyclerView.setAdapter(adapter);
+            }
+
+
+        });
         textDetails = v.findViewById(R.id.text_details);
         details = v.findViewById(R.id.linear_details);
         details.setVisibility(View.GONE);
@@ -81,6 +100,7 @@ public class AvailableDrivesFragment extends Fragment {
         adapter = new DrivesRecycleViewAdapter(drives);
         drivesRecyclerView.setAdapter(adapter);
         setHasOptionsMenu(true);
+
 
         return v;
     }
@@ -115,7 +135,7 @@ public class AvailableDrivesFragment extends Fragment {
     }
 
 
-    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<DrivesRecycleViewAdapter.DriveViewHolder> implements Filterable
+    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable
 
     {
         public List<Drive> drives2;
@@ -126,26 +146,42 @@ public class AvailableDrivesFragment extends Fragment {
             drivefull = new ArrayList<>(drives);
 
         }
-//
-//        public DrivesRecycleViewAdapter() {
-//            this.drives2 = drives;
-//
-//        }
 
 
         @Override
-        public DriveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(getActivity()).inflate(R.layout.item_drive, parent, false);
-            return new DriveViewHolder(v);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+            View view = null;
+            RecyclerView.ViewHolder viewHolder = null;
+
+            if (!flag) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drive, parent, false);
+                viewHolder = new DriveViewHolder1(view);
+            } else {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drive, parent, false);
+                viewHolder = new DriveViewHolder2(view);
+            }
+
+            return viewHolder;
         }
 
+
         @Override
-        public void onBindViewHolder(@NonNull DriveViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Drive drive = drives.get(position);
-            holder.nameTextView.setText(drive.getName());
-            holder.nameTextView.setTextSize(20);
-            holder.phoneTextView.setText(drive.getStartAddress());
-            holder.phoneTextView.setTextSize(16);
+            if (!flag) {
+                DriveViewHolder1 vaultItemHolder1 = (DriveViewHolder1) holder;
+                vaultItemHolder1.nameTextView.setText(drive.getName());
+                vaultItemHolder1.nameTextView.setTextSize(20);
+                vaultItemHolder1.phoneTextView.setText(drive.getStartAddress());
+                vaultItemHolder1.phoneTextView.setTextSize(16);
+            } else {
+                DriveViewHolder2 vaultItemHolder2 = (DriveViewHolder2) holder;
+                vaultItemHolder2.nameTextView.setText(drive.getName());
+                vaultItemHolder2.nameTextView.setTextSize(20);
+                vaultItemHolder2.phoneTextView.setText(drive.getEmail());
+                vaultItemHolder2.phoneTextView.setTextSize(16);
+            }
 
         }
 
@@ -170,13 +206,22 @@ public class AvailableDrivesFragment extends Fragment {
                     filteredList.addAll(drivefull);
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
-
-                    for (Drive item : drivefull) {
-                        String string = item.getStartAddress();
-                        String[] parts = string.split(", ");
-                        String part2 = parts[1]; // city
-                        if (part2.toLowerCase().contains(filterPattern)) {
-                            filteredList.add(item);
+                    if (!flag) {
+                        for (Drive item : drivefull) {
+                            String string = item.getStartAddress();
+                            String[] parts = string.split(", ");
+                            String part2 = parts[1]; // city
+                            if (part2.toLowerCase().contains(filterPattern)) {
+                                filteredList.add(item);
+                            }
+                        }
+                    }
+                    else {
+                        for (Drive item : drivefull) {
+                            String string = item.getEmail();
+                            if (string.toLowerCase().contains(filterPattern)) {
+                                filteredList.add(item);
+                            }
                         }
                     }
                 }
@@ -198,12 +243,12 @@ public class AvailableDrivesFragment extends Fragment {
         };
 
 
-        class DriveViewHolder extends RecyclerView.ViewHolder {
+        class DriveViewHolder1 extends RecyclerView.ViewHolder {
             TextView phoneTextView;
             TextView nameTextView;
 
 
-            public DriveViewHolder(final View itemView) {
+            public DriveViewHolder1(final View itemView) {
                 super(itemView);
                 phoneTextView = itemView.findViewById(R.id.phone_item_drive);
                 nameTextView = itemView.findViewById(R.id.name_item_drive);
@@ -281,6 +326,93 @@ public class AvailableDrivesFragment extends Fragment {
                     }
                 });
             }
+        }
+
+        /////////////////////////////////////
+        class DriveViewHolder2 extends RecyclerView.ViewHolder {
+            TextView phoneTextView;
+            TextView nameTextView;
+
+
+            public DriveViewHolder2(final View itemView) {
+                super(itemView);
+                phoneTextView = itemView.findViewById(R.id.phone_item_drive);
+                nameTextView = itemView.findViewById(R.id.name_item_drive);
+
+
+                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+
+                    @Override
+                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                        menu.setHeaderTitle("Select Action");
+                        MenuItem detailm = menu.add(Menu.NONE, 1, 1, "view details");
+                        detailm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+
+                                Drive drive = drives2.get(getAdapterPosition());
+                                textDetails.setText(drive.toString());
+                                details.setVisibility(View.VISIBLE);
+
+
+                                return true;
+                            }
+                        });
+                        MenuItem addDrive = menu.add(Menu.NONE, 1, 1, "take drive");
+                        addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                final Drive drive = drives2.get(getAdapterPosition());
+
+                                fb.changeStatus(drive, driver, DriveStatus.TREATMENT, new IDataBase.Action() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        builder.setMessage("The drive is in your care!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        String mail = drive.getEmail();
+                                                        String[] mails = mail.split(",");
+                                                        Intent in = new Intent(Intent.ACTION_SEND);
+                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
+                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
+                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
+                                                        in.setType("message/rfc822");
+                                                        startActivity(Intent.createChooser(in, "choose email"));
+                                                    }
+                                                });
+                                        AlertDialog alert = builder.create();
+                                        alert.show();
+
+                                        drives2.remove(getAdapterPosition());
+                                        details.setVisibility(View.GONE);
+                                        drivesRecyclerView.getAdapter().notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Exception exception) {
+                                        Toast.makeText(getActivity(), "הלקיחה נכשלה", Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    @Override
+                                    public void onProgress(String status, double percent) {
+                                        ;
+                                    }
+                                });
+
+
+                                return true;
+                            }
+                        });
+
+
+                    }
+                });
+            }
+
         }
     }
 }
