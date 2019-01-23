@@ -46,15 +46,17 @@ public interface IDataBase {
 
     List<Drive> getAvailableDrivesOfMyLocation(Location location);
 
-    // List<Drive> getDrivesOfDate(Date date);
-
     List<Drive> getDrivesOfPrice(double price);
 
     Driver getDriver(String email);
 
-    void changeStatus(Drive drive, Driver driver, final DriveStatus status,final Action action);
+    void changeStatus(Drive drive, Driver driver, final DriveStatus status, final Action action);
+
     List<String> getDistance();
+
     List<Drive> getDrivesByDistance(String loc);
+    void changeLocation(Location location, Context context);
+
 
 
 

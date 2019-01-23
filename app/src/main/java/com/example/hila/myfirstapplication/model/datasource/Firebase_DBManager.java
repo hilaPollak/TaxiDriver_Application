@@ -3,6 +3,7 @@ package com.example.hila.myfirstapplication.model.datasource;
 import android.content.Context;
 import android.location.Address;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /***
@@ -446,7 +448,7 @@ public class Firebase_DBManager implements IDataBase {
                 });
 
     }
-  ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public List<String> getDistance() {
@@ -467,5 +469,22 @@ public class Firebase_DBManager implements IDataBase {
                     locationDrives.add(drive);
         return locationDrives;
     }
+
+    @Override
+    public void changeLocation(Location location, Context context) {
+
+        Location loc = new Location(LocationManager.GPS_PROVIDER);
+        for (Drive drive : driveList) {
+            try {
+                loc = drive.getLocation(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            float d = loc.distanceTo(location) / 1000;
+            drive.setDistance(String.valueOf(d));
+        }
+    }
+
 
 }

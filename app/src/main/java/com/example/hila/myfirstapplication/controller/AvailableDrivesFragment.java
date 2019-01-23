@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,14 +53,14 @@ public class AvailableDrivesFragment extends Fragment {
     public LinearLayout details;
     public List<Drive> drives = new ArrayList<>();
     public TextView textDetails;
-    public Button buttonChoose;
     IDataBase fb = FactoryDataBase.getDataBase();
     private DrivesRecycleViewAdapter adapter;
-    private Menu menu;
     CheckBox checkDistance;
     public boolean flag;
 
     Driver driver;
+    Location driverLocation;
+
 
     @SuppressLint("ValidFragment")
     AvailableDrivesFragment(Driver e) {
@@ -92,6 +93,13 @@ public class AvailableDrivesFragment extends Fragment {
         details.setVisibility(View.GONE);
 
         getActivity().setTitle("Available Drives");
+
+        Location location = new Location("gps");
+        location.setLatitude(31.77);
+        location.setLongitude(35.177);
+        driverLocation = location;
+        fb.changeLocation(driverLocation,v.getContext());
+
 
         drivesRecyclerView = v.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
@@ -179,7 +187,7 @@ public class AvailableDrivesFragment extends Fragment {
                 DriveViewHolder2 vaultItemHolder2 = (DriveViewHolder2) holder;
                 vaultItemHolder2.nameTextView.setText(drive.getName());
                 vaultItemHolder2.nameTextView.setTextSize(20);
-                vaultItemHolder2.phoneTextView.setText(drive.getEmail());
+                vaultItemHolder2.phoneTextView.setText(drive.getDistance());
                 vaultItemHolder2.phoneTextView.setTextSize(16);
             }
 
@@ -215,10 +223,9 @@ public class AvailableDrivesFragment extends Fragment {
                                 filteredList.add(item);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         for (Drive item : drivefull) {
-                            String string = item.getEmail();
+                            String string = item.getDistance();
                             if (string.toLowerCase().contains(filterPattern)) {
                                 filteredList.add(item);
                             }
@@ -241,6 +248,8 @@ public class AvailableDrivesFragment extends Fragment {
                 notifyDataSetChanged();
             }
         };
+
+
 
 
         class DriveViewHolder1 extends RecyclerView.ViewHolder {
@@ -387,7 +396,7 @@ public class AvailableDrivesFragment extends Fragment {
                                         alert.show();
 
                                         drives2.remove(getAdapterPosition());
-                                        details.setVisibility(View.GONE);
+                                        //   details.setVisibility(View.GONE);
                                         drivesRecyclerView.getAdapter().notifyDataSetChanged();
                                     }
 

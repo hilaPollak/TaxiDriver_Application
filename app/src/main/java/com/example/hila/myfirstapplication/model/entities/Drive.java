@@ -1,9 +1,15 @@
 package com.example.hila.myfirstapplication.model.entities;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 
 import java.time.Clock;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * this class represent the drive's characteristics
@@ -18,7 +24,7 @@ public class Drive {
     private String Email;//client's email
     private String DriverName;//driver name
     private String id;
-
+    private String Distance;
 
 
     /**
@@ -199,20 +205,45 @@ public class Drive {
     @Override
     public String toString() {
         return "Name: " + Name + "\n" + "Phone Number: " + PhoneNumber + "\n" + "Start Address: " + StartAddress + "\n"
-                + "End Address: " + EndAddress + "\n"+"Start time: "+StartTime+"\n" + "Email: " + Email + "\n" + "Status of drive: " + StatusOfRide.toString() + "\n";
+                + "End Address: " + EndAddress + "\n" + "Start time: " + StartTime + "\n" + "Email: " + Email + "\n" + "Status of drive: " + StatusOfRide.toString() + "\n";
 
     }
 
+    public Location getLocation(Context context) throws Exception {
+        Geocoder gc = new Geocoder(context, Locale.getDefault());
+        Location locationA = null;
+        if (gc.isPresent()) {
+            List<Address> list = gc.getFromLocationName(getStartAddress(), 1);
+            Address address = list.get(0);
+            double lat = address.getLatitude();
+            double lng = address.getLongitude();
 
-    ////////////////////the id of request in firebase store//////////////////////////
-    public String getId() {
-        return id;
+            locationA = new Location("A");
+
+            locationA.setLatitude(lat);
+            locationA.setLongitude(lng);
+        }
+        return locationA;
     }
 
-    public void setId(String id) {
-        this.id = id;
+
+        ////////////////////the id of request in firebase store//////////////////////////
+        public String getId () {
+            return id;
+        }
+
+        public void setId (String id){
+            this.id = id;
+        }
+
+
+        public String getDistance () {
+            return Distance;
+        }
+
+        public void setDistance (String distance){
+            Distance = distance;
+        }
+
+
     }
-
-
-
-}
