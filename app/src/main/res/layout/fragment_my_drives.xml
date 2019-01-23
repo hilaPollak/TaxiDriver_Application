@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-   >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/my_distance_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_by_distance"
+
+        />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_drive_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/linear_details_my_drive"
@@ -31,4 +42,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
