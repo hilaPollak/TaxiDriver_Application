@@ -426,14 +426,24 @@ public class Firebase_DBManager implements IDataBase {
     }
 
     @Override
-    public void changeStatus(String driveID, Driver driver, final DriveStatus status, final Action action) {
-        drivesRef.child(driveID).child("driverName").setValue(driver.getFirstName());
-        drivesRef.child(driveID).child("statusOfRide").setValue(status)
+    public void changeStatus(Drive drive, Driver driver, final DriveStatus status, final Action action) {
+//        drivesRef.child(driveID).child("driverName").setValue(driver.getFirstName());
+//        drivesRef.child(driveID).child("statusOfRide").setValue(status)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        action.onSuccess();
+//                    }
+//                });
+        drive.setDriverName(driver.getFirstName());
+        drive.setStatusOfRide(status);
+        drivesRef.child(drive.getId()).setValue(drive)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         action.onSuccess();
                     }
                 });
+
     }
 }

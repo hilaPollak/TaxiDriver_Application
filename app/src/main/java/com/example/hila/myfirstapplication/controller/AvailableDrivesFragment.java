@@ -165,24 +165,6 @@ public class AvailableDrivesFragment extends Fragment {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Drive> filteredList = new ArrayList<>();//new list that contained only filtered items
-//                if (constraint == null || constraint.length() == 0)//we what to show all the results becuse we don't what filtering
-//                {
-//                    filteredList.clear();
-//                    filteredList.addAll(drivefull);
-//                } else { //we what to filter the list
-//                    String filterPattern = constraint.toString().toLowerCase().trim(); // sting that takes the input
-//                    for (Drive item : drivefull) {
-//                        if (item.getName().toLowerCase().contains((filterPattern))) {
-//                            filteredList.add(item);
-//                            notifyDataSetChanged();
-//
-//                        }
-//                    }
-//
-//                }
-//                FilterResults results = new FilterResults();
-//                results.values = filteredList;
-//                return results;
 
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(drivefull);
@@ -190,7 +172,7 @@ public class AvailableDrivesFragment extends Fragment {
                     String filterPattern = constraint.toString().toLowerCase().trim();
 
                     for (Drive item : drivefull) {
-                        String string =item.getStartAddress();
+                        String string = item.getStartAddress();
                         String[] parts = string.split(", ");
                         String part2 = parts[1]; // city
                         if (part2.toLowerCase().contains(filterPattern)) {
@@ -251,7 +233,7 @@ public class AvailableDrivesFragment extends Fragment {
                             public boolean onMenuItemClick(MenuItem item) {
                                 final Drive drive = drives2.get(getAdapterPosition());
 
-                                fb.changeStatus(drive.getId(), driver, DriveStatus.TREATMENT, new IDataBase.Action() {
+                                fb.changeStatus(drive, driver, DriveStatus.TREATMENT, new IDataBase.Action() {
                                     @Override
                                     public void onSuccess() {
 
@@ -273,11 +255,8 @@ public class AvailableDrivesFragment extends Fragment {
                                         AlertDialog alert = builder.create();
                                         alert.show();
 
-
                                         drives2.remove(getAdapterPosition());
-
                                         details.setVisibility(View.GONE);
-
                                         drivesRecyclerView.getAdapter().notifyDataSetChanged();
                                     }
 

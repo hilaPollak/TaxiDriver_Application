@@ -157,24 +157,7 @@ public class MyDrivesFragment extends Fragment {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Drive> filteredList = new ArrayList<>();//new list that contained only filtered items
-//                if (constraint == null || constraint.length() == 0)//we what to show all the results becuse we don't what filtering
-//                {
-//                    filteredList.clear();
-//                    filteredList.addAll(drivefull);
-//                } else { //we what to filter the list
-//                    String filterPattern = constraint.toString().toLowerCase().trim(); // sting that takes the input
-//                    for (Drive item : drivefull) {
-//                        if (item.getStartTime().toLowerCase().contains((filterPattern))) {
-//                            filteredList.add(item);
-//                            notifyDataSetChanged();
-//
-//                        }
-//                    }
-//
-//                }
-//                FilterResults results = new FilterResults();
-//                results.values = filteredList;
-//                return results;
+
                 if (constraint == null || constraint.length() == 0) {
                     filteredList.addAll(drivefull);
                 } else {
@@ -261,7 +244,7 @@ public class MyDrivesFragment extends Fragment {
                                 if (drive.getStatusOfRide().equals(DriveStatus.ENDING))
                                     Toast.makeText(getActivity(), "the drive already ending", Toast.LENGTH_LONG).show();
                                 else
-                                    fb.changeStatus(drive.getId(), driver, DriveStatus.ENDING, new IDataBase.Action() {
+                                    fb.changeStatus(drive, driver, DriveStatus.ENDING, new IDataBase.Action() {
                                         @Override
                                         public void onSuccess() {
 

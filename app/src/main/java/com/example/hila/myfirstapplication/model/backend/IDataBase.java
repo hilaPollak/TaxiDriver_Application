@@ -52,6 +52,6 @@ public interface IDataBase {
 
     Driver getDriver(String email);
 
-    void changeStatus(String driveID, Driver driver, final DriveStatus status,final Action action);
+    void changeStatus(Drive drive, Driver driver, final DriveStatus status,final Action action);
 
 }
