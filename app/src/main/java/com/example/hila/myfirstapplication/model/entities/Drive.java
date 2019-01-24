@@ -6,8 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import java.time.Clock;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,25 +21,18 @@ public class Drive {
     private String PhoneNumber;//client's phone number
     private String Email;//client's email
     private String DriverName;//driver name
-    private String id;
-    private String Distance;//distance from location to destination
+    private String id;//the key of task in firebase
+    private String Distance;//the distance between the start address to driver's location
 
 
     /**
-     * this func build defult constructor
-     *
-     * @param driveStatus
-     * @param startAddress1
-     * @param endAddress1
-     * @param nameText
-     * @param phoneText
-     * @param emailText
+     * this func build default constructor for firebase
      */
     public Drive(DriveStatus driveStatus, String startAddress1, String endAddress1, String startTime, String nameText, String phoneText, String emailText, String driverName) {
     }
 
-    /**
-     * this func build constructor
+    /***
+     * constructor
      */
     public Drive(DriveStatus statusOfRide, String startAddress, String endAddress, String startTime, String name, String phoneNumber, String email) {
         StatusOfRide = statusOfRide;
@@ -55,6 +46,9 @@ public class Drive {
 
     }
 
+    /***
+     * default constructor
+     */
     public Drive() {
     }
 
@@ -194,29 +188,67 @@ public class Drive {
     }
 
 
+    /***
+     * This function return the driver name
+     * @return
+     */
     public String getDriverName() {
         return DriverName;
     }
 
+    /***
+     *
+     * @param d The drivers name
+     */
     public void setDriverName(String d) {
         DriverName = d;
     }
 
-    @Override
-    public String toString() {
-        return "Name: " + Name + "\n" + "Phone Number: " + PhoneNumber + "\n" + "Start Address: " + StartAddress + "\n"
-                + "End Address: " + EndAddress + "\n" + "Start time: " + StartTime + "\n" + "Email: " + Email + "\n" + "Status of drive: " + StatusOfRide.toString() + "\n";
-
+    /***
+     * This function return the ID of the driver in firebase store
+     * @return the id value
+     */
+    public String getId() {
+        return id;
     }
 
+    /***
+     * This function input the ID od the driver in firebase store
+     * @param id the root of firebase task
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /***
+     * This funciton return the distance between the driver to drive
+     * @return the distance
+     */
+    public String getDistance() {
+        return Distance;
+    }
+
+    /***
+     * This function input the distance between the driver to drive
+     * @param distance the calculate distance we want set
+     */
+    public void setDistance(String distance) {
+        Distance = distance;
+    }
+
+    /***
+     * This function convert the location by string address
+     * @param context the context of activity to calculate the geocoder
+     * @return the convert location from address
+     */
     public Location getLocation(Context context) throws Exception {
         Geocoder gc = new Geocoder(context, Locale.getDefault());
-        Location locationA = null;
+        Location locationA = null;//create new location
         if (gc.isPresent()) {
             List<Address> list = gc.getFromLocationName(getStartAddress(), 1);
             Address address = list.get(0);
-            double lat = address.getLatitude();
-            double lng = address.getLongitude();
+            double lat = address.getLatitude();//set latitude
+            double lng = address.getLongitude();//set longitude
 
             locationA = new Location("A");
 
@@ -226,24 +258,16 @@ public class Drive {
         return locationA;
     }
 
-
-        ////////////////////the id of request in firebase store//////////////////////////
-        public String getId () {
-            return id;
-        }
-
-        public void setId (String id){
-            this.id = id;
-        }
-
-
-        public String getDistance () {
-            return Distance;
-        }
-
-        public void setDistance (String distance){
-            Distance = distance;
-        }
-
+    /***
+     * This function returns a string with all the details of the drive
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Name: " + Name + "\n" + "Phone Number: " + PhoneNumber + "\n" + "Start Address: " + StartAddress + "\n"
+                + "End Address: " + EndAddress + "\n" + "Start time: " + StartTime + "\n" + "Email: " + Email + "\n" + "Status of drive: " + StatusOfRide.toString() + "\n";
 
     }
+
+
+}

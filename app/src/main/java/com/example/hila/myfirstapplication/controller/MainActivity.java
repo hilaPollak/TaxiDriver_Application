@@ -14,12 +14,6 @@ import android.widget.Toast;
 import com.example.hila.myfirstapplication.R;
 import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
-import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
-import com.example.hila.myfirstapplication.model.entities.Drive;
-import com.example.hila.myfirstapplication.model.entities.Driver;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -34,10 +28,7 @@ public class MainActivity extends Activity {
 
 
     /**
-     * Find the Views in the layout<br />
-     * <br />
-     * Auto-created on 2018-12-20 19:54:47 by Android Layout Finder
-     * (http://www.buzzingandroid.com/tools/android-layout-finder)
+     * Find the Views in the layout
      */
     private void findViews() {
         textView = (TextView) findViewById(R.id.textView);
@@ -50,19 +41,25 @@ public class MainActivity extends Activity {
 
     }
 
+    /***
+     * This function creates the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); //Set the activity content from a layout resource
         findViews();
 
         sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-        DataFromSharedPreferences();
+        DataFromSharedPreferences();//keeps the details of the driver for next activities
 
 
     }
 
-
+    /***
+     * This function store the details of the driver to retrieve it in the next activities.
+     */
     protected void DataFromSharedPreferences() {
         if (sharedpreferences.contains("email"))
             emailText.setText(sharedpreferences.getString("email", ""));
@@ -80,13 +77,19 @@ public class MainActivity extends Activity {
 
     }
 
-       protected void GosignUpActivity(View view) {
-
+    /***
+     * This function calls the activity of sign up by intent
+     * @param view
+     */
+    protected void GosignUpActivity(View view) {
 
         Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
     }
 
+    /***
+     * This function calls the profile activity by intent
+     */
     protected void GoProfileActivity() {
         Intent intent = new Intent(getApplicationContext(), Profile.class);
         startActivity(intent);

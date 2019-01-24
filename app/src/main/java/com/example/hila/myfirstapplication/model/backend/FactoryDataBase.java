@@ -3,7 +3,7 @@ package com.example.hila.myfirstapplication.model.backend;
 import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
 
 /***
- * this class is the factory that choose the database to be by firebase
+ * This class is the factory that choose the database to be by firebase
  */
 public class FactoryDataBase {
     static IDataBase idb = null;

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.hila.myfirstapplication.R;
 import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
-import com.example.hila.myfirstapplication.model.entities.Drive;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
 public class SignUp extends Activity {
