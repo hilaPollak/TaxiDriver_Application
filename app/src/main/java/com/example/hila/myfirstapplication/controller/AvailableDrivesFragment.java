@@ -1,17 +1,22 @@
 package com.example.hila.myfirstapplication.controller;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +48,9 @@ import com.example.hila.myfirstapplication.model.datasource.Firebase_DBManager;
 import com.example.hila.myfirstapplication.model.entities.Drive;
 import com.example.hila.myfirstapplication.model.entities.DriveStatus;
 import com.example.hila.myfirstapplication.model.entities.Driver;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +65,7 @@ public class AvailableDrivesFragment extends Fragment {
     private DrivesRecycleViewAdapter adapter;
     CheckBox checkDistance;
     public boolean flag;
-
+    View view;
     Driver driver;
     Location driverLocation;
 
@@ -70,8 +78,8 @@ public class AvailableDrivesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_available_drives, container, false);
-        checkDistance = v.findViewById(R.id.distance_check);
+        view = inflater.inflate(R.layout.fragment_available_drives, container, false);
+        checkDistance = view.findViewById(R.id.distance_check);
         checkDistance.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -88,20 +96,33 @@ public class AvailableDrivesFragment extends Fragment {
 
 
         });
-        textDetails = v.findViewById(R.id.text_details);
-        details = v.findViewById(R.id.linear_details);
+        textDetails = view.findViewById(R.id.text_details);
+        details = view.findViewById(R.id.linear_details);
         details.setVisibility(View.GONE);
 
         getActivity().setTitle("Available Drives");
-
-        Location location = new Location("gps");
-        location.setLatitude(31.77);
-        location.setLongitude(35.177);
-        driverLocation = location;
-        fb.changeLocation(driverLocation,v.getContext());
+        getLocation();
 
 
-        drivesRecyclerView = v.findViewById(R.id.my_list);
+        new AsyncTask<Context, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Context... contexts) {
+                try {
+
+                    fb.changeLocation(driverLocation, view.getContext());
+
+                    return null;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return null;
+                }
+            }
+        }.execute();
+
+
+
+        drivesRecyclerView = view.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         drives = fb.getAvailableDrives();
@@ -110,8 +131,45 @@ public class AvailableDrivesFragment extends Fragment {
         setHasOptionsMenu(true);
 
 
-        return v;
+        return view;
     }
+
+
+    private void getLocation() {
+//        // check the Permission and request permissions if needed
+//        if (ActivityCompat.checkSelfPermission(view.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ActivityCompat.checkSelfPermission(view.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(getActivity(), new String[]
+//                    {android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
+//
+//        //get Provider location from the user location services
+//        FusedLocationProviderClient mFusedLocationDriver = LocationServices.getFusedLocationProviderClient(getActivity());
+//
+//        //run the function on the background and add onSuccess listener
+//        mFusedLocationDriver.getLastLocation()
+//                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+//                    @SuppressLint("SetTextI18n")
+//                    @Override
+//                    public void onSuccess(Location _location) {
+//                        // Got last known location. In some rare situations this can be null.
+//                        if (_location != null) {
+//                            List<Address> addresses;
+//                            //save the location
+//                            driverLocation = _location;
+//                        } else {
+//                            Toast.makeText(view.getContext(), "can't find your location", Toast.LENGTH_LONG).show();
+                            Location location = new Location("gps");
+                            location.setLatitude(31.77);
+                            location.setLongitude(35.177);
+                            driverLocation = location;
+
+//
+//                        }
+//                    }
+//                });
+    }
+
 
     @Override
     public void onDestroy() {
@@ -248,8 +306,6 @@ public class AvailableDrivesFragment extends Fragment {
                 notifyDataSetChanged();
             }
         };
-
-
 
 
         class DriveViewHolder1 extends RecyclerView.ViewHolder {
