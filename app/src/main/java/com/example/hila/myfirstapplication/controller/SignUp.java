@@ -1,6 +1,8 @@
 package com.example.hila.myfirstapplication.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.text.TextUtils;
@@ -67,12 +69,12 @@ public class SignUp extends Activity {
     protected Driver getDriver() {
         Driver driver = new Driver();
 
-        driver.set_Id(Integer.parseInt(editTextID.getText().toString()));
+        driver.set_Id(editTextID.getText().toString());
         driver.setFirstName(editTextName.getText().toString());
         driver.setLastName(editTextLastName.getText().toString());
-        driver.setPhoneNumber(Integer.parseInt(editTextPhone.getText().toString()));
+        driver.setPhoneNumber(editTextPhone.getText().toString());
         driver.setEmail(editTextEmail.getText().toString());
-        driver.setCreditCard(Integer.parseInt(editTextCreditCard.getText().toString()));
+        driver.setCreditCard(editTextCreditCard.getText().toString());
         driver.setPassword(editTextPassword.getText().toString());
 
         return  driver;
@@ -83,35 +85,43 @@ public class SignUp extends Activity {
        startActivity(intent);//start the activity
     }
 
-    protected  void addDriver(Driver driver) {
-        try {
+    protected  void addDriver(final Driver driver) {
+
             buttonSignUp.setEnabled(false);
-            IDataBase dataBase = FactoryDataBase.getDataBase();
-            dataBase.addDriver(driver, new IDataBase.Action() {
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(getBaseContext(), "ההרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
-                    buttonSignUp.setEnabled(true);
-                    goToActivity2();
-                }
+            final IDataBase dataBase = FactoryDataBase.getDataBase();
+
+            new AsyncTask<Context, Void, Void>() {
 
                 @Override
-                public void onFailure(Exception exception) {
-                    Toast.makeText(getBaseContext(), "ההרשמה נכשלה", Toast.LENGTH_LONG).show();
-                    buttonSignUp.setEnabled(true);
-                }
+                protected Void doInBackground(Context... contexts) {
+                    try {
+                        dataBase.addDriver(driver, new IDataBase.Action() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getBaseContext(), "ההרשמה בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+                                //    buttonSignUp.setEnabled(true);
+                                goToActivity2();
+                            }
 
-                @Override
-                public void onProgress(String status, double percent) {
-                    if( percent != 100)
-                        buttonSignUp.setEnabled(false);
-                }
-            });
-        } catch (Exception e){
-            Toast.makeText(getBaseContext(), "Error \n", Toast.LENGTH_LONG).show();
-            buttonSignUp.setEnabled(true);
-        }
+                            @Override
+                            public void onFailure(Exception exception) {
+                                Toast.makeText(getBaseContext(), "ההרשמה נכשלה", Toast.LENGTH_LONG).show();
+                                // buttonSignUp.setEnabled(true);
+                            }
 
+                            @Override
+                            public void onProgress(String status, double percent) {
+                                //if (percent != 100)
+                                // buttonSignUp.setEnabled(false);
+                            }
+                        });
+                        return null;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        return null;
+                    }
+                }
+            }.execute();
 
     }
 

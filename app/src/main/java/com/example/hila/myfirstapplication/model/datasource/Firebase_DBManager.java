@@ -86,13 +86,21 @@ public class Firebase_DBManager implements IDataBase {
 
     @Override
     public void addDriver(Driver driverToAdd, final Action action) {
-        Task<Void> task = driverRef.push().setValue(driverToAdd);
+        Task<Void> task = driverRef.push().setValue(driverToAdd);//push- had spacial key
+
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid) {
+            public void onSuccess(Void aVoid) {//add to database success
                 action.onSuccess();
             }
         });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {//add to database fail
+                action.onFailure(e);
+            }
+        });;
     }
 
     @Override

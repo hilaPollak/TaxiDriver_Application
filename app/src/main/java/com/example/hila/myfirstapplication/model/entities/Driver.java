@@ -8,10 +8,10 @@ import android.content.ContentValues;
 public class Driver {
     private String FirstName;//first name of driver
     private String LastName;//last name of driver
-    private long _Id;//id of driver
-    private long PhoneNumber;// phone number of driver
+    private String _Id;//id of driver
+    private String PhoneNumber;// phone number of driver
     private String Email;// email of driver
-    private long CreditCard;// credit card for commission
+    private String CreditCard;// credit card for commission
     private String password;//password for driver
 
 
@@ -23,7 +23,7 @@ public class Driver {
     /**
      this func build constructor
      */
-    public Driver(String firstName, String lastName, long id, long phoneNumber, String email, long creditCard,String password1) {
+    public Driver(String firstName, String lastName, String id, String phoneNumber, String email, String creditCard,String password1) {
         FirstName = firstName;
         LastName = lastName;
         _Id = id;
@@ -68,7 +68,7 @@ public class Driver {
      this func return the id of driver
      * @return   the driver's id
      */
-    public long get_Id() {
+    public String get_Id() {
         return _Id;
     }
     /**
@@ -76,14 +76,14 @@ public class Driver {
      @param  id  the id driver
      @return   null
      */
-    public void set_Id(long id) {
+    public void set_Id(String id) {
         _Id = id;
     }
     /**
      this func return the phone number of driver
      * @return   the driver's phone number
      */
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return PhoneNumber;
     }
     /**
@@ -91,7 +91,7 @@ public class Driver {
      @param  phoneNumber  the phone number of driver
      @return   null
      */
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
     /**
@@ -113,7 +113,7 @@ public class Driver {
      this func return the credit card of driver
      * @return   the driver's credit card
      */
-    public long getCreditCard() {
+    public String getCreditCard() {
         return CreditCard;
     }
     /**
@@ -121,7 +121,7 @@ public class Driver {
      @param  creditCard  the credit card of driver
      @return   null
      */
-    public void setCreditCard(long creditCard) {
+    public void setCreditCard(String creditCard) {
         CreditCard = creditCard;
     }
 

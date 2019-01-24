@@ -35,8 +35,6 @@ public class Profile extends AppCompatActivity
     static ComponentName service = null;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,7 +58,7 @@ public class Profile extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment=new RandomDrive();
+        Fragment fragment = new RandomDrive();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container, fragment).commit();
@@ -71,8 +69,6 @@ public class Profile extends AppCompatActivity
         email = sharedpreferences.getString("email", "");
         fb = FactoryDataBase.getDataBase();
         driver = fb.getDriver(email);
-
-
 
 
     }
@@ -100,8 +96,6 @@ public class Profile extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -118,7 +112,7 @@ public class Profile extends AppCompatActivity
         } else if (id == R.id.nav_see_my_drives) {
             fragment = new MyDrivesFragment(driver);
         } else if (id == R.id.go_web) {
-            Intent broIntent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://gett.com/il/about/"));
+            Intent broIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gett.com/il/about/"));
             startActivity(broIntent);
 
 
@@ -155,7 +149,6 @@ public class Profile extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-
 
 
         }
