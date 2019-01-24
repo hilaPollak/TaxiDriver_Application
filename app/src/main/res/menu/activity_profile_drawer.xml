@@ -10,6 +10,9 @@
         <item android:id="@+id/nav_see_my_drives"
             android:icon="@drawable/ic_person"
             android:title="@string/my_drives"/>
+        <item android:id="@+id/go_web"
+            android:icon="@drawable/ic_mrnu_help_24dp"
+            android:title="@string/visit_our_web"/>
         <item android:id="@+id/nav_exit"
             android:icon="@drawable/ic_exit"
             android:title="@string/exit"/>
