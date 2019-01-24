@@ -24,7 +24,7 @@ public class Drive {
     private String Email;//client's email
     private String DriverName;//driver name
     private String id;
-    private String Distance;
+    private String Distance;//distance from location to destination
 
 
     /**
