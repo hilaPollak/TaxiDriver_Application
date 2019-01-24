@@ -41,8 +41,8 @@ public class ToNotificationReceiver extends BroadcastReceiver {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.ic_taxi)
-                .setContentTitle("new request")
-                .setContentText("you have a new relevant request")
+                .setContentTitle("new drives request")
+                .setContentText("you have a new relevant drives")
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
                 .setContentIntent(contentIntent)
                 .setContentInfo("Info");
