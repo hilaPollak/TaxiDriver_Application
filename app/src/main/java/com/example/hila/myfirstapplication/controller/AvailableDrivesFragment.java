@@ -73,7 +73,7 @@ public class AvailableDrivesFragment extends Fragment {
     /***
      * this func create the fragment
      * @param inflater support for general purpose decompression
-     * @param container the container weput the fragment
+     * @param container the container we put the fragment
      * @param savedInstanceState argument to save state
      * @return the view of fragment
      */
@@ -86,13 +86,17 @@ public class AvailableDrivesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!checkDistance.isChecked()) {//not check
-                    flag = false;//this flag for adapter to view and search by distance
+                    flag = false;//this flag for adapter to view and search by city
+                    checkDistance.setText("search by distance");
+
                 }
                 if (checkDistance.isChecked()) {//check
-                    flag = true;//this flag for adapter to view and search by city
+                    flag = true;//this flag for adapter to view and search by distance
+                    checkDistance.setText("search by city");
+
                 }
-                adapter = new DrivesRecycleViewAdapter(drives);
-                drivesRecyclerView.setAdapter(adapter);
+                adapter = new DrivesRecycleViewAdapter(drives);//create adapter
+                drivesRecyclerView.setAdapter(adapter);//set adapter
             }
         });
         textDetails = view.findViewById(R.id.text_details);//set text details
@@ -204,7 +208,6 @@ public class AvailableDrivesFragment extends Fragment {
     /***
      * this class create recycle view adapter of available drives
      * doing filter
-     * including 2 view holder to 2 option of filtering and view
      */
     public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
         //the objects of adapter
@@ -247,14 +250,14 @@ public class AvailableDrivesFragment extends Fragment {
                 DriveViewHolder2 vaultItemHolder1 = (DriveViewHolder2) holder;
                 vaultItemHolder1.nameTextView.setText(drive.getName());//set name on item in adapter
                 vaultItemHolder1.nameTextView.setTextSize(20);
-                vaultItemHolder1.phoneTextView.setText(drive.getStartAddress());//set start address on item in adapter
-                vaultItemHolder1.phoneTextView.setTextSize(16);
+                vaultItemHolder1.changeTextView.setText(drive.getStartAddress());//set start address on item in adapter
+                vaultItemHolder1.changeTextView.setTextSize(16);
             } else {//view holder by distance
                 DriveViewHolder2 vaultItemHolder2 = (DriveViewHolder2) holder;
                 vaultItemHolder2.nameTextView.setText(drive.getName());//set name on item in adapter
                 vaultItemHolder2.nameTextView.setTextSize(20);
-                vaultItemHolder2.phoneTextView.setText(drive.getDistance());//set distance on item in adapter
-                vaultItemHolder2.phoneTextView.setTextSize(16);
+                vaultItemHolder2.changeTextView.setText(drive.getDistance());//set distance on item in adapter
+                vaultItemHolder2.changeTextView.setTextSize(16);
             }
         }
 
@@ -316,12 +319,16 @@ public class AvailableDrivesFragment extends Fragment {
                 return results;
             }
 
-
+            /***
+             * this fuction update the adapter by the filter
+             * @param constraint the type user
+             * @param results the filter list
+             */
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 drives2.clear();
                 drives2.addAll((List) results.values);
-                notifyDataSetChanged();
+                notifyDataSetChanged();//update change in recycle
             }
         };
 
@@ -329,15 +336,17 @@ public class AvailableDrivesFragment extends Fragment {
          * this class create view holder and represent how to act on any item press
          */
         class DriveViewHolder2 extends RecyclerView.ViewHolder {
-            TextView phoneTextView;
-            TextView nameTextView;
+            TextView changeTextView;// location/city view
+            TextView nameTextView;//name view
 
 
             public DriveViewHolder2(final View itemView) {
                 super(itemView);
-                phoneTextView = itemView.findViewById(R.id.phone_item_drive);
+                //connect to view
+                changeTextView = itemView.findViewById(R.id.phone_item_drive);
                 nameTextView = itemView.findViewById(R.id.name_item_drive);
                 itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {//create a menu by long parse
+
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                         menu.setHeaderTitle("Select Action");//the title of menu
