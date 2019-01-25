@@ -105,7 +105,11 @@ public class Profile extends AppCompatActivity
         return true;
     }
 
-
+    /***
+     *this function check if items to the action bar connected
+     * @param item utem in menu
+     * @return true if items to the action connected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -115,6 +119,11 @@ public class Profile extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /***
+     * this function say what to do when every item in menu selected
+     * @param item item in menu
+     * @return true after item select
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -122,56 +131,50 @@ public class Profile extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment = null;
 
-        if (id == R.id.nav_see_all_drives) {
-            fragment = new AvailableDrivesFragment(driver);
-
-        } else if (id == R.id.nav_see_my_drives) {
-            fragment = new MyDrivesFragment(driver);
-        } else if (id == R.id.go_web) {
-            Intent broIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gett.com/il/about/"));
-            startActivity(broIntent);
-
-
-        } else if (id == R.id.nav_exit) {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (id == R.id.nav_see_all_drives) {//click on available drive
+            fragment = new AvailableDrivesFragment(driver);//set new fragment of available drive
+        } else if (id == R.id.nav_see_my_drives) {//click on my drive
+            fragment = new MyDrivesFragment(driver);//set new fragment of my drive
+        } else if (id == R.id.go_web) {//click on visit in veb
+            Intent broIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://gett.com/il/about/"));//create new intent of web
+            startActivity(broIntent);//start intent
+        } else if (id == R.id.nav_exit) {//click on exit
+            AlertDialog.Builder builder;//create new alert dialog
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//check the version of emulator
                 builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
             } else {
                 builder = new AlertDialog.Builder(this);
             }
-            builder.setTitle("EXIT?")
-                    .setMessage("Are you sure you want to EXIT this app?")
+            builder.setTitle("EXIT?")//set title of dialog
+                    .setMessage("Are you sure you want to EXIT this app?")//set massage of dialog
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                            homeIntent.addCategory(Intent.CATEGORY_HOME);
-                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        public void onClick(DialogInterface dialog, int which) {//if click yes
+                            Intent homeIntent = new Intent(Intent.ACTION_MAIN);//open new intent
+                            homeIntent.addCategory(Intent.CATEGORY_HOME);//go home screen
+                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//turn the flag to clear
 
                             //go to phones home screen
                             startActivity(homeIntent);
-                            finish();
-                            System.exit(0);
+                            finish();//finish the active
+                            System.exit(0);//exit from system
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(DialogInterface dialog, int which) {//wen press no
                             // do nothing
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-        if (fragment != null) {
+        if (fragment != null) {//click on whan of navigation item fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
+            fragmentManager.beginTransaction()//upp fragment
                     .replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-
-
         }
-
+        //find drawer layout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-
     }
 }

@@ -15,17 +15,24 @@ import android.widget.TextView;
 
 import com.example.hila.myfirstapplication.R;
 
+/**
+ * this class represent the activity of random activity- creative.
+ */
 public class RandomDrive extends Fragment {
 
+    /***
+     * this class extend the asyncTask and do act in background
+     * the act- calculate price and print
+     */
     class SyncTaskCounter extends AsyncTask<Void, Double, Void> {
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids) {//the act we do in background
             double price = 0;
 
-            while (!isCancelled()) {
-                price = price + 0.05;
+            while (!isCancelled()) {//until we dont press stop and cancel the act
+                price = price + 0.05;//add 0.05 every 1 second
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1000);//whait 1 second
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -33,6 +40,7 @@ public class RandomDrive extends Fragment {
             }
             return null;
         }
+
         @Override
         protected void onProgressUpdate(Double... price) {
             printPrice(price[0]);  // this is called on UI thread
@@ -40,55 +48,57 @@ public class RandomDrive extends Fragment {
 
         @Override
         protected void onCancelled() {
-            super.onCancelled();
+            super.onCancelled();//cancel the task
         }
     }
 
-
+    //the objects of the screen
     private Chronometer chronometer;
     private Button start;
     private Button stop;
     private TextView price;
     SyncTaskCounter asyncTaskCount;
+
+    /***
+     * this func create the fragment
+     * @param inflater support for general purpose decompression
+     * @param container the container weput the fragment
+     * @param savedInstanceState argument to save state
+     * @return the view of fragment
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_random_drive, container, false);
-        chronometer = (Chronometer) v.findViewById(R.id.chronometer);
-        price = v.findViewById(R.id.see_price);
-
-        getActivity().setTitle("Random Drive");
-
-
-        start = (Button) v.findViewById(R.id.start);
-        start.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.fragment_random_drive, container, false);//find view
+        chronometer = (Chronometer) v.findViewById(R.id.chronometer);//find chronometer view
+        price = v.findViewById(R.id.see_price);//find price view
+        getActivity().setTitle("Random Drive");//set title of fragment
+        start = (Button) v.findViewById(R.id.start);//find button start view
+        start.setOnClickListener(new View.OnClickListener() {//click listener
             @Override
             public void onClick(View view) {
-
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                chronometer.start();
-
-
-//                SyncTaskCounter asyncTaskCount;
-//                asyncTaskCount = new SyncTaskCounter();
-                asyncTaskCount = new SyncTaskCounter();
-                asyncTaskCount.execute();
+                chronometer.setBase(SystemClock.elapsedRealtime());//set chronometer
+                chronometer.start();//start chronometer
+                asyncTaskCount = new SyncTaskCounter();//create new asyncTak
+                asyncTaskCount.execute();//start asyncTask
             }
         });
-        stop = (Button) v.findViewById(R.id.stop);
-        stop.setOnClickListener(new View.OnClickListener() {
+        stop = (Button) v.findViewById(R.id.stop);//find stop button
+        stop.setOnClickListener(new View.OnClickListener() {//click listener
             @Override
             public void onClick(View view) {
-                chronometer.stop();
-                asyncTaskCount.cancel(true);
-
+                chronometer.stop();//sto chronometer
+                asyncTaskCount.cancel(true);//cancel asyncTask
             }
         });
-        return v;
+        return v;//the view
     }
 
+    /***
+     * this function get price and print it
+     * @param price1 the price to print
+     */
     public void printPrice(double price1) {
         price.setText("the price is: " + price1 + " shekel");
-
     }
 }
