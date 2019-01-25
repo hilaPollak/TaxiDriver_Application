@@ -434,7 +434,7 @@ public class Firebase_DBManager implements IDataBase {
     /***
      * this func calculate drive list of the driver date
      * @param date the date the driver choose
-     * @return drive list of the driver date  s
+     * @return drive list of the driver date
      */
     @Override
     public List<Drive> getDrivesOfDate(String date) {

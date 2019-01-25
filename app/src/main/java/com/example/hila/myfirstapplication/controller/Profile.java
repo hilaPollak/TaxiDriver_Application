@@ -26,53 +26,63 @@ import com.example.hila.myfirstapplication.model.backend.FactoryDataBase;
 import com.example.hila.myfirstapplication.model.backend.IDataBase;
 import com.example.hila.myfirstapplication.model.entities.Driver;
 
+/**
+ * this class represent the activity of driver profile that include navigation driver 4 option and 3 fragments
+ */
 public class Profile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Driver driver;
+    private Driver driver;//the user
     IDataBase fb;
-    String email;
-    static ComponentName service = null;
+    String email;//mail to find driver from shared preferences
+    static ComponentName service = null;// service to see notification
 
-
+    /**
+     * this func create the activity
+     *
+     * @param savedInstanceState represent the jump of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (service == null) {
-            Intent intent = new Intent(getBaseContext(), NotificationService.class);
-            service = startService(intent);
+        if (service == null) {//service does'nt start
+            Intent intent = new Intent(getBaseContext(), NotificationService.class);//create new notification service intent
+            service = startService(intent);// start the intent
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profile);//connect to view
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);//set toolbar
 
-
+        //set the drawer layout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //set navigation view
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = new RandomDrive();
+        //set the open fragment that show in activity
+        Fragment fragment = new RandomDrive();// fragment of counter in random drive
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
+        fragmentManager.beginTransaction()//upp the  fragment
                 .replace(R.id.frame_container, fragment).commit();
 
-
+        //get the details of the driver that enter in login activity
         SharedPreferences sharedpreferences;
-        sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-        email = sharedpreferences.getString("email", "");
+        sharedpreferences = getSharedPreferences("userPreferences", Context.MODE_PRIVATE);//get reference
+        email = sharedpreferences.getString("email", "");//get mail key
         fb = FactoryDataBase.getDataBase();
-        driver = fb.getDriver(email);
-
-
+        driver = fb.getDriver(email);//get drive by mail
     }
 
+    /***
+     * this function close the drawer when we back from activity
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -83,12 +93,18 @@ public class Profile extends AppCompatActivity
         }
     }
 
+    /***
+     *this function check if items to the action bar present
+     * @param menu menu of navigation drawer
+     * @return true if items to the action bar present
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.profile, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
