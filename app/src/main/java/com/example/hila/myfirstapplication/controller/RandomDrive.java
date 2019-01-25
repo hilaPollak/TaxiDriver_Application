@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.hila.myfirstapplication.R;
 
 /**
- * this class represent the activity of random activity- creative.
+ * this class represent the fragment of random fragment- creative.
  */
 public class RandomDrive extends Fragment {
 

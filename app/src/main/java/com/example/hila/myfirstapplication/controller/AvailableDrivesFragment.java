@@ -40,86 +40,102 @@ import com.example.hila.myfirstapplication.model.entities.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class represent the fragment of available drive fragment
+ * including recycle view adapter
+ */
 @SuppressLint("ValidFragment")
 public class AvailableDrivesFragment extends Fragment {
+
+    //the objects of the screen
     public RecyclerView drivesRecyclerView;
     public LinearLayout details;
-    public List<Drive> drives = new ArrayList<>();
+    public List<Drive> drives = new ArrayList<>();//the drives list
     public TextView textDetails;
     IDataBase fb = FactoryDataBase.getDataBase();
     private DrivesRecycleViewAdapter adapter;
     CheckBox checkDistance;
-    public boolean flag;
+    public boolean flag;//flag to switch between location and city
     View view;
     Driver driver;
-    Location driverLocation;
+    Location driverLocation;//the location of current driver
 
-
+    /**
+     * default constructor to set driver
+     *
+     * @param driver1 The current driver
+     */
     @SuppressLint("ValidFragment")
-    AvailableDrivesFragment(Driver e) {
-        this.driver = e;
+    AvailableDrivesFragment(Driver driver1) {
+        this.driver = driver1;
     }
 
+    /***
+     * this func create the fragment
+     * @param inflater support for general purpose decompression
+     * @param container the container weput the fragment
+     * @param savedInstanceState argument to save state
+     * @return the view of fragment
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_available_drives, container, false);
-        checkDistance = view.findViewById(R.id.distance_check);
-        checkDistance.setOnClickListener(new View.OnClickListener() {
-
+        checkDistance = view.findViewById(R.id.distance_check);//set checkBox
+        checkDistance.setOnClickListener(new View.OnClickListener() {//click listener
             @Override
             public void onClick(View v) {
-                if (!checkDistance.isChecked()) {
-                    flag = false;
+                if (!checkDistance.isChecked()) {//not check
+                    flag = false;//this flag for adapter to view and search by distance
                 }
-                if (checkDistance.isChecked()) {
-                    flag = true;
+                if (checkDistance.isChecked()) {//check
+                    flag = true;//this flag for adapter to view and search by city
                 }
                 adapter = new DrivesRecycleViewAdapter(drives);
                 drivesRecyclerView.setAdapter(adapter);
             }
-
-
         });
-        textDetails = view.findViewById(R.id.text_details);
-        details = view.findViewById(R.id.linear_details);
-        details.setVisibility(View.GONE);
-
-        getActivity().setTitle("Available Drives");
-        getLocation();
-
-
-        new AsyncTask<Context, Void, Void>() {
+        textDetails = view.findViewById(R.id.text_details);//set text details
+        details = view.findViewById(R.id.linear_details);//set layout details
+        details.setVisibility(View.GONE);//cant see the layout until we press in menu
+        getActivity().setTitle("Available Drives");//set title for fragment
+        getLocation();//find the location of tne current driver
+        new AsyncTask<Context, Void, Void>() {//we open asyncTask because to set the distance tak too much time
 
             @Override
             protected Void doInBackground(Context... contexts) {
                 try {
-
-                    fb.changeLocation(driverLocation, view.getContext());
-
+                    fb.changeLocation(driverLocation, view.getContext());//change the distance between driver and client and set in entities
                     return null;
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     return null;
                 }
             }
-        }.execute();
-
-
-
+        }.execute();//start the asyncTask
+        //set recycle view
         drivesRecyclerView = view.findViewById(R.id.my_list);
         drivesRecyclerView.setHasFixedSize(true);
         drivesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        drives = fb.getAvailableDrives();
-        adapter = new DrivesRecycleViewAdapter(drives);
+        drives = fb.getAvailableDrives();//set the list drive in available drives
+        adapter = new DrivesRecycleViewAdapter(drives);//create new adapter
         drivesRecyclerView.setAdapter(adapter);
-        setHasOptionsMenu(true);
-
-
-        return view;
+        setHasOptionsMenu(true);//to se the search view in fragment
+        return view;//the view
     }
 
+    /***
+     * this function stop listener to drive list when the fragment closes
+     */
+    @Override
+    public void onDestroy() {
+        Firebase_DBManager.stopNotifyToDriveList();//stop the listing to drive list
+        super.onDestroy();//call super method
+    }
 
+    /***
+     * this function calculate the location of current driver
+     */
     private void getLocation() {
 //        // check the Permission and request permissions if needed
 //        if (ActivityCompat.checkSelfPermission(view.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -144,10 +160,10 @@ public class AvailableDrivesFragment extends Fragment {
 //                            driverLocation = _location;
 //                        } else {
 //                            Toast.makeText(view.getContext(), "can't find your location", Toast.LENGTH_LONG).show();
-                            Location location = new Location("gps");
-                            location.setLatitude(31.77);
-                            location.setLongitude(35.177);
-                            driverLocation = location;
+        Location location = new Location("gps");
+        location.setLatitude(31.77);
+        location.setLongitude(35.177);
+        driverLocation = location;
 
 //
 //                        }
@@ -155,111 +171,131 @@ public class AvailableDrivesFragment extends Fragment {
 //                });
     }
 
-
-    @Override
-    public void onDestroy() {
-        Firebase_DBManager.stopNotifyToDriveList();
-        super.onDestroy();
-    }
-
-
+    /***
+     *
+     * @param menu the search view
+     * @param inflater support for general purpose decompression
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        inflater.inflate(R.menu.search, menu);//set on menu the menu search we create
+        MenuItem searchItem = menu.findItem(R.id.action_search);//set on search view icon search
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {//what to do when we write on tool
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //do nothing
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                //filter by how we determine
                 adapter.getFilter().filter(newText);
                 return false;
             }
         });
     }
 
+    ///////////////////// DrivesRecycleViewAdapter ////////////////////////////////
 
-    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable
+    /***
+     * this class create recycle view adapter of available drives
+     * doing filter
+     * including 2 view holder to 2 option of filtering and view
+     */
+    public class DrivesRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+        //the objects of adapter
+        public List<Drive> drives2;//the available drives
+        public List<Drive> drivefull;//the filter drives
 
-    {
-        public List<Drive> drives2;
-        public List<Drive> drivefull;
-
+        /***
+         * constructor
+         * @param drives2 she available drives list
+         */
         public DrivesRecycleViewAdapter(List<Drive> drives2) {
             this.drives2 = drives2;
             drivefull = new ArrayList<>(drives);
-
         }
 
-
+        /***
+         * this function create view holders
+         * @param parent the context
+         * @param viewType the type of view
+         * @return
+         */
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
             View view = null;
             RecyclerView.ViewHolder viewHolder = null;
-
-            if (!flag) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drive, parent, false);
-                viewHolder = new DriveViewHolder1(view);
-            } else {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drive, parent, false);
-                viewHolder = new DriveViewHolder2(view);
-            }
-
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_drive, parent, false);//create a view holder☼
+            viewHolder = new DriveViewHolder2(view);
             return viewHolder;
         }
 
-
+        /***
+         * this class set the view in items of recycle view
+         * @param holder the view holder
+         * @param position the position of item in list
+         */
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Drive drive = drives.get(position);
-            if (!flag) {
-                DriveViewHolder1 vaultItemHolder1 = (DriveViewHolder1) holder;
-                vaultItemHolder1.nameTextView.setText(drive.getName());
+            if (!flag) {//view holder by city
+                DriveViewHolder2 vaultItemHolder1 = (DriveViewHolder2) holder;
+                vaultItemHolder1.nameTextView.setText(drive.getName());//set name on item in adapter
                 vaultItemHolder1.nameTextView.setTextSize(20);
-                vaultItemHolder1.phoneTextView.setText(drive.getStartAddress());
+                vaultItemHolder1.phoneTextView.setText(drive.getStartAddress());//set start address on item in adapter
                 vaultItemHolder1.phoneTextView.setTextSize(16);
-            } else {
+            } else {//view holder by distance
                 DriveViewHolder2 vaultItemHolder2 = (DriveViewHolder2) holder;
-                vaultItemHolder2.nameTextView.setText(drive.getName());
+                vaultItemHolder2.nameTextView.setText(drive.getName());//set name on item in adapter
                 vaultItemHolder2.nameTextView.setTextSize(20);
-                vaultItemHolder2.phoneTextView.setText(drive.getDistance());
+                vaultItemHolder2.phoneTextView.setText(drive.getDistance());//set distance on item in adapter
                 vaultItemHolder2.phoneTextView.setTextSize(16);
             }
-
         }
 
-
+        /***
+         * this class return the num of count
+         * @return size of drives
+         */
         @Override
         public int getItemCount() {
             return drives2.size();
         }
 
+        /***
+         * this class return the filter to menu
+         * @return filter
+         */
         @Override
         public Filter getFilter() {
-
             return filter;
         }
 
+        /***
+         * this item represent how to filter the recycle view adapter
+         */
         public Filter filter = new Filter() {
+            /***
+             * this function filter the available drive list
+             * @param constraint the value the user type in search view
+             * @return the filer list
+             */
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Drive> filteredList = new ArrayList<>();//new list that contained only filtered items
 
-                if (constraint == null || constraint.length() == 0) {
-                    filteredList.addAll(drivefull);
+                if (constraint == null || constraint.length() == 0) {//empty in search
+                    filteredList.addAll(drivefull);//get all items
                 } else {
-                    String filterPattern = constraint.toString().toLowerCase().trim();
-                    if (!flag) {
+                    String filterPattern = constraint.toString().toLowerCase().trim();//convert all to same pattern (caps lock)
+                    if (!flag) {//we want filtering by city
                         for (Drive item : drivefull) {
-                            String string = item.getStartAddress();
+                            String string = item.getStartAddress();//start address
                             String[] parts = string.split(", ");
                             String part2 = parts[1]; // city
                             if (part2.toLowerCase().contains(filterPattern)) {
@@ -267,20 +303,17 @@ public class AvailableDrivesFragment extends Fragment {
                             }
                         }
                     } else {
-                        for (Drive item : drivefull) {
-                            String string = item.getDistance();
+                        for (Drive item : drivefull) {//we want filtering by distance
+                            String string = item.getDistance();//distance
                             if (string.toLowerCase().contains(filterPattern)) {
                                 filteredList.add(item);
                             }
                         }
                     }
                 }
-
                 FilterResults results = new FilterResults();
-                results.values = filteredList;
-
+                results.values = filteredList;//the filtering list
                 return results;
-
             }
 
 
@@ -292,93 +325,9 @@ public class AvailableDrivesFragment extends Fragment {
             }
         };
 
-
-        class DriveViewHolder1 extends RecyclerView.ViewHolder {
-            TextView phoneTextView;
-            TextView nameTextView;
-
-
-            public DriveViewHolder1(final View itemView) {
-                super(itemView);
-                phoneTextView = itemView.findViewById(R.id.phone_item_drive);
-                nameTextView = itemView.findViewById(R.id.name_item_drive);
-
-
-                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-
-                    @Override
-                    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                        menu.setHeaderTitle("Select Action");
-                        MenuItem detailm = menu.add(Menu.NONE, 1, 1, "view details");
-                        detailm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-
-                                Drive drive = drives2.get(getAdapterPosition());
-                                textDetails.setText(drive.toString());
-                                details.setVisibility(View.VISIBLE);
-
-
-                                return true;
-                            }
-                        });
-                        MenuItem addDrive = menu.add(Menu.NONE, 1, 1, "take drive");
-                        addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                final Drive drive = drives2.get(getAdapterPosition());
-
-                                fb.changeStatus(drive, driver, DriveStatus.TREATMENT, new IDataBase.Action() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                        builder.setMessage("The drive is in your care!")
-                                                .setCancelable(false)
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        String mail = drive.getEmail();
-                                                        String[] mails = mail.split(",");
-                                                        Intent in = new Intent(Intent.ACTION_SEND);
-                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
-                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
-                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
-                                                        in.setType("message/rfc822");
-                                                        startActivity(Intent.createChooser(in, "choose email"));
-                                                    }
-                                                });
-                                        AlertDialog alert = builder.create();
-                                        alert.show();
-
-                                        drives2.remove(getAdapterPosition());
-                                        details.setVisibility(View.GONE);
-                                        drivesRecyclerView.getAdapter().notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onFailure(Exception exception) {
-                                        Toast.makeText(getActivity(), "הלקיחה נכשלה", Toast.LENGTH_LONG).show();
-
-                                    }
-
-                                    @Override
-                                    public void onProgress(String status, double percent) {
-                                        ;
-                                    }
-                                });
-
-
-                                return true;
-                            }
-                        });
-
-
-                    }
-                });
-            }
-        }
-
-        /////////////////////////////////////
+        /***
+         * this class create view holder and represent how to act on any item press
+         */
         class DriveViewHolder2 extends RecyclerView.ViewHolder {
             TextView phoneTextView;
             TextView nameTextView;
@@ -388,81 +337,68 @@ public class AvailableDrivesFragment extends Fragment {
                 super(itemView);
                 phoneTextView = itemView.findViewById(R.id.phone_item_drive);
                 nameTextView = itemView.findViewById(R.id.name_item_drive);
-
-
-                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-
+                itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {//create a menu by long parse
                     @Override
                     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                        menu.setHeaderTitle("Select Action");
-                        MenuItem detailm = menu.add(Menu.NONE, 1, 1, "view details");
-                        detailm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        menu.setHeaderTitle("Select Action");//the title of menu
+                        MenuItem detailm = menu.add(Menu.NONE, 1, 1, "view details");//view details
+                        detailm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {// click listener
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-
-                                Drive drive = drives2.get(getAdapterPosition());
-                                textDetails.setText(drive.toString());
-                                details.setVisibility(View.VISIBLE);
-
-
+                                Drive drive = drives2.get(getAdapterPosition());//get the position drive
+                                textDetails.setText(drive.toString());//set drive's details in text box
+                                details.setVisibility(View.VISIBLE);//se the tex box details
                                 return true;
                             }
                         });
-                        MenuItem addDrive = menu.add(Menu.NONE, 1, 1, "take drive");
-                        addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        MenuItem addDrive = menu.add(Menu.NONE, 1, 1, "take drive");//take drive
+                        addDrive.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {//click listener
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                final Drive drive = drives2.get(getAdapterPosition());
-
-                                fb.changeStatus(drive, driver, DriveStatus.TREATMENT, new IDataBase.Action() {
+                                final Drive drive = drives2.get(getAdapterPosition());//get the position drive
+                                fb.changeStatus(drive, driver, DriveStatus.TREATMENT, new IDataBase.Action() {//change the status ond drive name of the drive
                                     @Override
                                     public void onSuccess() {
-
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                        builder.setMessage("The drive is in your care!")
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//set alert dialog
+                                        builder.setMessage("The drive is in your care!")//title
                                                 .setCancelable(false)
                                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        String mail = drive.getEmail();
+                                                    public void onClick(DialogInterface dialog, int id) {//click listener
+                                                        String mail = drive.getEmail();                                                        //send mail to the client that ask the drive
+                                                        //send mail to the client that ask the drive
                                                         String[] mails = mail.split(",");
                                                         Intent in = new Intent(Intent.ACTION_SEND);
-                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);
-                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");
-                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");
+                                                        in.putExtra(Intent.EXTRA_EMAIL, mails);//send to
+                                                        in.putExtra(Intent.EXTRA_SUBJECT, "get taxi");//subject
+                                                        in.putExtra(Intent.EXTRA_TEXT, "taxi will coming to you in few minutes");//text
                                                         in.setType("message/rfc822");
                                                         startActivity(Intent.createChooser(in, "choose email"));
                                                     }
                                                 });
                                         AlertDialog alert = builder.create();
-                                        alert.show();
-
-                                        drives2.remove(getAdapterPosition());
-                                        //   details.setVisibility(View.GONE);
-                                        drivesRecyclerView.getAdapter().notifyDataSetChanged();
+                                        alert.show();//show dialog
+                                        drives2.remove(getAdapterPosition());//remove drive from list
+                                        details.setVisibility(View.GONE);//gone the details
+                                        drivesRecyclerView.getAdapter().notifyDataSetChanged();//update change
                                     }
 
                                     @Override
-                                    public void onFailure(Exception exception) {
+                                    public void onFailure(Exception exception) {//cannot take drive
                                         Toast.makeText(getActivity(), "הלקיחה נכשלה", Toast.LENGTH_LONG).show();
-
                                     }
 
                                     @Override
-                                    public void onProgress(String status, double percent) {
+                                    public void onProgress(String status, double percent) {//on progress
                                         ;
                                     }
                                 });
 
-
                                 return true;
                             }
                         });
-
-
                     }
                 });
             }
-
         }
     }
 }
