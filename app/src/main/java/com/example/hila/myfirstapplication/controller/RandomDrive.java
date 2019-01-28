@@ -99,6 +99,7 @@ public class RandomDrive extends Fragment {
      * @param price1 the price to print
      */
     public void printPrice(double price1) {
-        price.setText("the price is: " + price1 + " shekel");
+        String p=String.format("%.2f",price1);
+        price.setText("the price is: " + p + " shekel");
     }
 }

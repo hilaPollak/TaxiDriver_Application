@@ -165,8 +165,8 @@ public class AvailableDrivesFragment extends Fragment {
 //                        } else {
 //                            Toast.makeText(view.getContext(), "can't find your location", Toast.LENGTH_LONG).show();
         Location location = new Location("gps");
-        location.setLatitude(31.77);
-        location.setLongitude(35.177);
+        location.setLatitude(31.785790);
+        location.setLongitude(35.189450);
         driverLocation = location;
 
 //
